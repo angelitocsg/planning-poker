@@ -1,0 +1,28 @@
+﻿.card-area {
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container {
+    width: 85px;
+    height: 128px;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.card-small {
+    width: 50px;
+    height: 75px;
+}
+
+.card-label {
+    margin-top: 10px;
+    color: var(--color-fg-text0);
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.card-label-small {
+    color: var(--color-fg-text1);
+}

@@ -1,0 +1,23 @@
+﻿@if (Side == Side.Front)
+{
+    <div class=@($"card-default card-front{(Small ? " card-small" : "")}")>
+        <CardText Small=@Small Number=@Number />
+    </div>
+}
+@if (Side == Side.Back)
+{
+    <div class=@($"card-default card-back{(Small ? " card-small" : "")}")>
+        <div class=@($"card-default card-back-line{(Small ? " card-small" : "")}")></div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Number { get; set; }
+
+    [Parameter]
+    public Side Side { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+}

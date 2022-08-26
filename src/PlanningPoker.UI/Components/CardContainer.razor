@@ -1,0 +1,20 @@
+﻿<div class="card-area">
+    <div class=@($"card-default card-container{(Small ? " card-small" : "")}")>
+        @ChildContent
+    </div>
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span class=@($"card-label{(Small ? " card-label-small" : "")}")>@Label</span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+}

@@ -1,0 +1,11 @@
+﻿<div class=@($"card-number{(Small ? " card-number-small" : "")}")>
+    @Number
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public int Number { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+}
