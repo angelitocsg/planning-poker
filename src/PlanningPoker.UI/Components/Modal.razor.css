@@ -1,0 +1,70 @@
+﻿.modal {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0,0,0,0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .modal .modal-dialog {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--color-bg-inactive1);
+        border-radius: 15px;
+        padding: 30px;
+    }
+
+        .modal .modal-dialog .modal-title {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 800;
+            font-size: 32px;
+            color: var(--color-fg-text1);
+        }
+
+        .modal .modal-dialog .modal-body {
+            padding-top: 20px;
+            flex-direction: column;
+        }
+
+            .modal .modal-dialog .modal-body .form-input {
+                border: 0;
+                border-radius: 15px;
+                background: var(--color-bg-back2);
+                box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+                font-size: 16px;
+                font-weight: 700;
+                height: 45px;
+                width: 300px;
+                padding: 0 15px;
+                outline: none;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+.btn {
+    border: 0;
+    outline: none;
+    width: 100%;
+    height: 45px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+    .btn.btn-primary {
+        background: var(--color-bg-orange);
+        color: var(--color-fg-yellow);
+        border-radius: 0 15px 15px 0;
+    }
+
+    .btn.btn-secondary {
+        background: var(--color-bg-back1);
+        color: var(--color-bg-active1);
+        border-radius: 15px 0 0 15px;
+    }

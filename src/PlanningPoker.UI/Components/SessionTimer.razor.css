@@ -1,0 +1,47 @@
+﻿.session-container {
+    width: 135px;
+    height: 105px;
+    flex-direction: column;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.session-container .session-timer {
+        flex: 1;
+        margin-top: 3px;
+        justify-content: center;
+        align-items: center;
+        box-shadow: none;
+        filter: none;
+    }
+
+    .session-container .session-timer .highlight {
+        background: var(--color-bg-active1);
+    }
+
+        .session-container .session-timer .session-timer-text {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 36px;
+            color: var(--color-fg-text1);
+            box-shadow: none;
+            filter: none;
+        }
+
+    .session-container .session-button {
+        background: var(--color-bg-orange);
+        justify-content: center;
+        align-items:center;
+        border: 0;
+        border-radius: 0px 0px 15px 15px;
+        height: 40px;
+    }
+
+        .session-container .session-button .session-button-text {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--color-fg-yellow);
+        }

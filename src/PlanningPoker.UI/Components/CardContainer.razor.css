@@ -4,9 +4,15 @@
 }
 
 .card-container {
+    cursor: pointer;
     width: 85px;
     height: 128px;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.card-container-empty {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: var(--color-bg-blue1);
 }
 
 .card-small {

@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Console", "Pl
 		{AD3DF183-2744-4274-ABCD-B672B0CCEE32} = {AD3DF183-2744-4274-ABCD-B672B0CCEE32}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Core", "PlanningPoker.Core\PlanningPoker.Core.csproj", "{DB699A4E-42A7-4E49-AAC5-FE10168E82DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Core", "PlanningPoker.Core\PlanningPoker.Core.csproj", "{DB699A4E-42A7-4E49-AAC5-FE10168E82DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

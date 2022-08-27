@@ -1,6 +1,10 @@
 ﻿:root {
     --color-bg-orange: #F25C05;
     --color-fg-yellow: #F2E205;
+    --color-bg-active1: #D9CA9C;
+    --color-bg-inactive1: #A69677;
+    --color-bg-back1: #333;
+    --color-bg-back2: #D9D9D9;
     --color-bg-blue0: #001960;
     --color-bg-blue1: #04328C;
     --color-bg-blue2: #1F81BF;
@@ -8,7 +12,13 @@
     --color-fg-text1: #333;
 }
 
-html, body {
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
+
+html, body, #app {
+    margin: 0;
     font-family: 'Roboto', sans-serif;
     height: 100%;
 }
@@ -31,7 +41,6 @@ h1:focus {
     border-radius: 15px;
     justify-content: center;
     align-items: center;
-    background: var(--color-bg-blue1);
 }
 
 .card-small {

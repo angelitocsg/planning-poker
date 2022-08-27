@@ -72,6 +72,12 @@ namespace PlanningPoker.Core.Entities
                 return;
             }
 
+            if (_players.Count() >= 14)
+            {
+                _errorMesasges.Add($"Maximum number of players reached.");
+                return;
+            }
+
             var player = new Player(playerName);
 
             if (!_players.Any(x => x.Name == player.Name))

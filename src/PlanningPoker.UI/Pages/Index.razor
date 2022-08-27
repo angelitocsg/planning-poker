@@ -1,34 +1,46 @@
 ﻿@page "/"
 
-<PageTitle>Planning Poker</PageTitle>
+<PageTitle>Planning Poker | @@angelitocsg</PageTitle>
 
-<CardContainer Label="Jogador">
-    <Card Side=Side.Front Number=8 />
-</CardContainer>
+<div class="game-container">
+    <div class="game-area">
+        <div class="game-top">
+            <div class="player-seats-top">
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador" />
+            </div>
+        </div>
+        <div class="game-center">
+            <div class="player-seats-left">
+                <CardContainer Label="Jogador" />
+            </div>
+            <GameTable>
+                <SessionTimer />
+            </GameTable>
+            <div class="player-seats-right">
+                <CardContainer Label="Jogador" />
+            </div>
+        </div>
+        <div class="game-bottom">
+            <div class="player-seats-bottom">
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador">
+                    <Card Side=Side.Back />
+                </CardContainer>  
+                <CardContainer Label="Jogador">
+                    <Card Side=Side.Front Number=8 />
+                </CardContainer>
+            </div>
+        </div>
+    </div>
+    <div class="game-player">
+        <PlayerTable PlayerName="Jogador"></PlayerTable>
+    </div>
+</div>
 
-&nbsp;&nbsp;&nbsp;
-
-<CardContainer Label="Jogador">
-    <Card Side=Side.Back Number=8 />
-</CardContainer>
-
-&nbsp;&nbsp;&nbsp;
-
-<CardContainer Label="Jogador">
-</CardContainer>
-
-<hr />
-
-<CardContainer Small Label="Média">
-    <Card Small Side=Side.Front Number=13 />
-</CardContainer>
-
-&nbsp;&nbsp;&nbsp;
-
-<CardContainer Small Label="2">
-    <Card Small Side=Side.Front Number=8 />
-</CardContainer>
-
-&nbsp;&nbsp;&nbsp;
-
-<CardContainer Small/>
+                <Modal/>

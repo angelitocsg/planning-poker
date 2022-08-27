@@ -1,0 +1,19 @@
+﻿.game-table {
+    border-radius: 100px;
+    height: 150px;
+    width: 100%;
+    max-width: 900px;
+    background: var(--color-bg-inactive1);
+    margin: 0 30px;
+    align-items: center;
+    padding: 0 60px;
+}
+
+    .game-table .task-name {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 24px;
+        flex: 1 auto;
+        color: var(--color-fg-text1);
+    }

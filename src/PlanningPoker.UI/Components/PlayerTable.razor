@@ -1,0 +1,42 @@
+﻿<div class="player-table">
+    <div class="player-table-text">
+        @PlayerName, escolha sua pontuação:
+    </div>
+    <div class="player-cards">
+        <CardContainer Small>
+            <Card Small Number="1"></Card>
+        </CardContainer>
+
+        <CardContainer Small>
+            <Card Small Number="2"></Card>
+        </CardContainer>
+
+        <CardContainer Small>
+            <Card Small Number="3"></Card>
+        </CardContainer>
+
+        <CardContainer Small>
+            <Card Small Number="5"></Card>
+        </CardContainer>
+
+        <CardContainer Small>
+            <Card Small Number="8"></Card>
+        </CardContainer>
+
+        <CardContainer Small>
+            <Card Small Number="13"></Card>
+        </CardContainer>
+
+        <CardContainer Small>
+            <Card Small Number="21"></Card>
+        </CardContainer>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string PlayerName { get; set; }
+
+    [Parameter]
+    public bool Highlight { get; set; }
+}

@@ -1,0 +1,27 @@
+﻿.player-table {
+    background: var(--color-bg-inactive1);
+    min-width: 550px;
+    height: 160px;
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-cards {
+    width: 90%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.player-table-text {
+    color: var(--color-fg-text1);
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 10px;
+}

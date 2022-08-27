@@ -1,0 +1,19 @@
+﻿<div class="session-container">
+    <div class="session-timer">
+        <span class="session-timer-text">00:00</span>
+    </div>
+    <button type="button" class="session-button">
+        <span class="session-button-text">iniciar</span>
+    </button>
+</div>
+
+@code {
+
+    private int Status { get => !Started && !Stoped ? 1 : Started && !Stoped ? 2 : 3; }
+
+    [Parameter]
+    public bool Started { get; set; }
+
+    [Parameter]
+    public bool Stoped { get; set; }
+}

@@ -1,0 +1,52 @@
+﻿.game-container {
+    flex-direction: column;
+    flex: 1;
+}
+
+    .game-container .game-area {
+        flex: 1 auto;
+        flex-direction: column;
+    }
+
+        .game-container .game-area .game-top {
+            flex: 1;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .game-container .game-area .player-seats-top {
+            justify-content: space-around;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .game-container .game-area .game-bottom {
+            flex: 1;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 30px;
+        }
+
+        .game-container .game-area .player-seats-bottom {
+            justify-content: space-around;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .game-container .game-area .game-center {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .game-container .game-area .game-center .player-seats-left {
+            }
+
+            .game-container .game-area .game-center .player-seats-right {
+            }
+
+    .game-container .game-player {
+        height: 160px;
+        justify-content: center;
+    }

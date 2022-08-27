@@ -1,4 +1,4 @@
-﻿<div class=@($"card-number{(Small ? " card-number-small" : "")}")>
+﻿<div class=@CardTextStyle>
     @Number
 </div>
 
@@ -8,4 +8,8 @@
 
     [Parameter]
     public bool Small { get; set; }
+
+    private string CardTextSmallStyle => Small ? "card-text-small" : string.Empty;
+    private string CardTextStyle => $"card-text {CardTextSmallStyle}";
+
 }
