@@ -14,11 +14,11 @@ Planning Poker is a powerful and fun way to improve planning and estimation cere
 - [x] Backend game rules
 - [x] Figma project layout
 - [x] Deploy backend on Heroku
-- [ ] Frontend application with Blazor
-- [ ] Frontend components design
+- [x] Deploy frontend on Github Pages
+- [x] Frontend components design
+- [x] Frontend application with Blazor
 - [ ] Frontend components behaviors
 - [ ] Frontend and Backend integration
-- [ ] Deploy frontend on Github Pages
 - [ ] Ready to play!
 
 ## Screenshots
@@ -28,6 +28,10 @@ Planning Poker is a powerful and fun way to improve planning and estimation cere
 ## Deploy backend on Heroku
 
 [Heroku Doc](./docs/Heroku.md)
+
+## References
+
+https://swimburger.net/blog/dotnet/how-to-deploy-aspnet-blazor-webassembly-to-github-pages
 
 ## Developed by
 
