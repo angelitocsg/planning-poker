@@ -1,0 +1,287 @@
+/* /Components/Card.razor.rz.scp.css */
+.card-front[b-a2pkwganf5] {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-orange);
+}
+
+.card-back[b-a2pkwganf5] {
+    width: 100%;
+    height: 100%;
+    background: var(--color-bg-blue2);
+}
+
+.card-back-line[b-a2pkwganf5] {
+    width: calc(100% - 32%);
+    height: calc(100% - 25%);
+    border: 1px solid #333333;
+    background: inherit;
+}
+/* /Components/CardContainer.razor.rz.scp.css */
+.card-area[b-iy06fovk2p] {
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container[b-iy06fovk2p] {
+    cursor: pointer;
+    width: 85px;
+    height: 128px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.card-container-empty[b-iy06fovk2p] {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: var(--color-bg-blue1);
+}
+
+.card-small[b-iy06fovk2p] {
+    width: 50px;
+    height: 75px;
+}
+
+.card-label[b-iy06fovk2p] {
+    margin-top: 10px;
+    color: var(--color-fg-text0);
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.card-label-small[b-iy06fovk2p] {
+    color: var(--color-fg-text1);
+}
+/* /Components/CardText.razor.rz.scp.css */
+.card-text[b-z8x0gincap] {
+    color: var(--color-fg-yellow);
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 48px;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.card-text-small[b-z8x0gincap] {
+    font-size: 24px;
+}
+/* /Components/GameTable.razor.rz.scp.css */
+.game-table[b-lcmyzknnz7] {
+    border-radius: 100px;
+    height: 150px;
+    width: 100%;
+    max-width: 900px;
+    background: var(--color-bg-inactive1);
+    margin: 0 30px;
+    align-items: center;
+    padding: 0 60px;
+}
+
+    .game-table .task-name[b-lcmyzknnz7] {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 24px;
+        flex: 1 auto;
+        color: var(--color-fg-text1);
+    }
+/* /Components/Modal.razor.rz.scp.css */
+.modal[b-clsfrv84o2] {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0,0,0,0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .modal .modal-dialog[b-clsfrv84o2] {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--color-bg-inactive1);
+        border-radius: 15px;
+        padding: 30px;
+    }
+
+        .modal .modal-dialog .modal-title[b-clsfrv84o2] {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 800;
+            font-size: 32px;
+            color: var(--color-fg-text1);
+        }
+
+        .modal .modal-dialog .modal-body[b-clsfrv84o2] {
+            padding-top: 20px;
+            flex-direction: column;
+        }
+
+            .modal .modal-dialog .modal-body .form-input[b-clsfrv84o2] {
+                border: 0;
+                border-radius: 15px;
+                background: var(--color-bg-back2);
+                box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+                font-size: 16px;
+                font-weight: 700;
+                height: 45px;
+                width: 300px;
+                padding: 0 15px;
+                outline: none;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+.btn[b-clsfrv84o2] {
+    border: 0;
+    outline: none;
+    width: 100%;
+    height: 45px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+    .btn.btn-primary[b-clsfrv84o2] {
+        background: var(--color-bg-orange);
+        color: var(--color-fg-yellow);
+        border-radius: 0 15px 15px 0;
+    }
+
+    .btn.btn-secondary[b-clsfrv84o2] {
+        background: var(--color-bg-back1);
+        color: var(--color-bg-active1);
+        border-radius: 15px 0 0 15px;
+    }
+/* /Components/PlayerTable.razor.rz.scp.css */
+.player-table[b-6mdrrtvizs] {
+    background: var(--color-bg-inactive1);
+    min-width: 550px;
+    height: 160px;
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-cards[b-6mdrrtvizs] {
+    width: 90%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.player-table-text[b-6mdrrtvizs] {
+    color: var(--color-fg-text1);
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+/* /Components/SessionTimer.razor.rz.scp.css */
+.session-container[b-vp179872r1] {
+    width: 135px;
+    height: 105px;
+    flex-direction: column;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.session-container .session-timer[b-vp179872r1] {
+        flex: 1;
+        margin-top: 3px;
+        justify-content: center;
+        align-items: center;
+        box-shadow: none;
+        filter: none;
+    }
+
+    .session-container .session-timer .highlight[b-vp179872r1] {
+        background: var(--color-bg-active1);
+    }
+
+        .session-container .session-timer .session-timer-text[b-vp179872r1] {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 36px;
+            color: var(--color-fg-text1);
+            box-shadow: none;
+            filter: none;
+        }
+
+    .session-container .session-button[b-vp179872r1] {
+        background: var(--color-bg-orange);
+        justify-content: center;
+        align-items:center;
+        border: 0;
+        border-radius: 0px 0px 15px 15px;
+        height: 40px;
+    }
+
+        .session-container .session-button .session-button-text[b-vp179872r1] {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--color-fg-yellow);
+        }
+/* /Pages/Index.razor.rz.scp.css */
+.game-container[b-k783e0us72] {
+    flex-direction: column;
+    flex: 1;
+}
+
+    .game-container .game-area[b-k783e0us72] {
+        flex: 1 auto;
+        flex-direction: column;
+    }
+
+        .game-container .game-area .game-top[b-k783e0us72] {
+            flex: 1;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .game-container .game-area .player-seats-top[b-k783e0us72] {
+            justify-content: space-around;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .game-container .game-area .game-bottom[b-k783e0us72] {
+            flex: 1;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 30px;
+        }
+
+        .game-container .game-area .player-seats-bottom[b-k783e0us72] {
+            justify-content: space-around;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .game-container .game-area .game-center[b-k783e0us72] {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .game-container .game-area .game-center .player-seats-left[b-k783e0us72] {
+            }
+
+            .game-container .game-area .game-center .player-seats-right[b-k783e0us72] {
+            }
+
+    .game-container .game-player[b-k783e0us72] {
+        height: 160px;
+        justify-content: center;
+    }
