@@ -2,7 +2,7 @@ name: Deploy to GitHb Pages
 
 on:
   push:
-    branches: [ "publish" ]
+    branches: [ main ]
 
 jobs:
   deploy-to-github-pages:
