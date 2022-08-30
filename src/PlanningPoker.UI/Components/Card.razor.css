@@ -1,14 +1,28 @@
 ﻿.card-front {
     width: 100%;
     height: 100%;
-    background-color: var(--color-bg-orange);
+    background-color: var(--bg-card-front-default);
+    cursor: pointer;
 }
+
+    .card-front:hover {
+        background-color: var(--bg-card-front-highlight);
+    }
+
+    .card-front:active {
+        background-color: var(--bg-card-front-default);
+    }
 
 .card-back {
     width: 100%;
     height: 100%;
-    background: var(--color-bg-blue2);
+    background: var(--bg-card-back-default);
+    cursor: not-allowed;
 }
+
+    .card-back:hover {
+        background-color: var(--bg-card-back-highlight);
+    }
 
 .card-back-line {
     width: calc(100% - 32%);

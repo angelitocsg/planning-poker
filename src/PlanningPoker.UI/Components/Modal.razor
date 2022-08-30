@@ -6,9 +6,33 @@
         <div class="modal-body">
             <input type="text" class="form-input" placeholder="Digite seu nome" />
             <div class="btn-group">
-                <button type="button" class="btn btn-secondary">espiar</button>
-                <button type="button" class="btn btn-primary">entrar</button>
+                @if (!string.IsNullOrWhiteSpace(LabelCancel))
+                {
+                    <button type="button" class="btn btn-secondary" onclick=@OnCancelClick>@LabelCancel</button>
+                }
+                <button type="button" class=@BtnPrimaryStyle onclick=@OnOkClick>@LabelOk</button>
             </div>
         </div>
     </div>
 </div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string LabelOk { get; set; }
+
+    [Parameter]
+    public string LabelCancel { get; set; }
+
+    [Parameter]
+    public Action OnOkClick { get; set; }
+
+    [Parameter]
+    public Action OnCancelClick { get; set; }
+
+    private string BtnPrimaryOnlyStyle => string.IsNullOrWhiteSpace(LabelCancel) ? "only" : string.Empty;
+    private string BtnPrimaryStyle => $"btn btn-primary {BtnPrimaryOnlyStyle}";
+
+}

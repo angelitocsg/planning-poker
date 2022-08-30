@@ -1,0 +1,12 @@
+﻿@page "/"
+
+<div class="game-container">
+    <Modal LabelOk="criar sessão" OnOkClick=@HandleEnter />
+</div>
+
+@code {
+    private void HandleEnter()
+    {
+        _navigationManager.NavigateTo($"/session");
+    }
+}

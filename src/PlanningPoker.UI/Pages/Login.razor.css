@@ -1,0 +1,4 @@
+﻿.game-container {
+    flex-direction: column;
+    flex: 1;
+}

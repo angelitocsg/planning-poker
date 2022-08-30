@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/session/{sessionId}"
 
 <PageTitle>Planning Poker | @@angelitocsg</PageTitle>
 
@@ -6,19 +6,19 @@
     <div class="game-area">
         <div class="game-top">
             <div class="player-seats-top">
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador" />
+                <CardContainer Label="Jogador A" />
+                <CardContainer Label="Jogador B" />
+                <CardContainer Label="Jogador C" />
+                <CardContainer Label="Jogador D" />
+                <CardContainer Label="Jogador E" />
+                <CardContainer Label="Jogador F" />
             </div>
         </div>
         <div class="game-center">
             <div class="player-seats-left">
                 <CardContainer Label="Jogador" />
             </div>
-            <GameTable>
+            <GameTable Active=@Started>
                 <SessionTimer StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
             </GameTable>
             <div class="player-seats-right">
@@ -39,24 +39,25 @@
         </div>
     </div>
     <div class="game-player">
-        <PlayerTable PlayerName="Jogador"></PlayerTable>
+        <PlayerTable Active=@Started PlayerName="Jogador A"></PlayerTable>
     </div>
 </div>
 
 @code {
-    private bool Started { get; set; } = false;
+    [Parameter]
+    public string SessionId { get; set; }
+
     private DateTime StartedAt { get; set; } = DateTime.MinValue;
+    private bool Started => StartedAt != DateTime.MinValue;
 
     private void HandleToggleStartStop()
     {
         if (Started)
         {
-            Started = false;
             StartedAt = DateTime.MinValue;
             return;
         }
 
-        Started = true;
         StartedAt = DateTime.Now;
     }
 }

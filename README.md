@@ -17,6 +17,7 @@ Planning Poker is a powerful and fun way to improve planning and estimation cere
 - [x] Deploy frontend on Github Pages
 - [x] Frontend components design
 - [x] Frontend application with Blazor
+- [ ] User session to manage concurrency in game session
 - [ ] Frontend components behaviors
 - [ ] Frontend and Backend integration
 - [ ] Ready to play!

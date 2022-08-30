@@ -1,0 +1,13 @@
+﻿@page "/session"
+
+<div class="game-container">
+    <Modal LabelOk="entrar" OnOkClick=@HandleEnter
+           LabelCancel="espiar" OnCancelClick=@HandleEnter />
+</div>
+
+@code {
+    private void HandleEnter()
+    {
+        _navigationManager.NavigateTo($"/session/1234");
+    }
+}

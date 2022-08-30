@@ -1,5 +1,5 @@
 ﻿.player-table {
-    background: var(--color-bg-inactive1);
+    background: var(--bg-item-default);
     min-width: 550px;
     height: 160px;
     position: absolute;
@@ -10,6 +10,10 @@
     justify-content: center;
     align-items: center;
 }
+
+    .player-table.highlight {
+        background: var(--bg-item-highlight);
+    }
 
 .player-cards {
     width: 90%;

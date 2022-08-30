@@ -1,4 +1,4 @@
-﻿<div class="player-table">
+﻿<div class=@PlayerTableStyle>
     <div class="player-table-text">
         @PlayerName, escolha sua pontuação:
     </div>
@@ -39,4 +39,10 @@
 
     [Parameter]
     public bool Highlight { get; set; }
+
+        [Parameter]
+    public bool Active { get; set; }
+
+    private string PlayerTableActiveStyle => Active ? "highlight" : string.Empty;
+    private string PlayerTableStyle => $"player-table {PlayerTableActiveStyle}";
 }

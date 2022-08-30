@@ -57,6 +57,7 @@ h1:focus {
 
 .btn {
     border: 0;
+    cursor: pointer;
     outline: none;
 }
 
@@ -88,6 +89,7 @@ h1:focus {
 
 
 /*-------------------*/
+
 .card-default {
     border-radius: 15px;
     justify-content: center;

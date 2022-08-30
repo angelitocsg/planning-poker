@@ -5,7 +5,7 @@
         <span class="session-timer-text">@($"{Timer.Minutes.ToString().PadLeft(2, '0')}:{Timer.Seconds.ToString().PadLeft(2, '0')}")</span>
     </div>
     <button type="button" class=@SessionButtonStyle() onclick=@OnClick>
-        <span class="session-button-text">@Label</span>
+        @Label
     </button>
 </div>
 
