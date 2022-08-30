@@ -1,25 +1,45 @@
 ﻿:root {
-    --color-bg-orange: #F25C05;
-    --color-fg-yellow: #F2E205;
-    --color-bg-active1: #D9CA9C;
-    --color-bg-inactive1: #A69677;
+    --color-bg-orange: #f25c05;
+    --color-fg-yellow: #f2e205;
+    --color-bg-active1: #d9ca9c;
+    --color-bg-inactive1: #a69677;
     --color-bg-back1: #333;
-    --color-bg-back2: #D9D9D9;
+    --color-bg-back2: #d9d9d9;
     --color-bg-blue0: #001960;
-    --color-bg-blue1: #04328C;
-    --color-bg-blue2: #1F81BF;
-    --color-fg-text0: #FFF;
+    --color-bg-blue1: #04328c;
+    --color-bg-blue2: #1f81bf;
+    --color-fg-text0: #fff;
     --color-fg-text1: #333;
+    /* cards */
+    --bg-card-front-default: #f25c05;
+    --bg-card-front-highlight: #b54200;
+    --bg-card-back-default: #1f81bf;
+    --bg-card-back-highlight: #005e9a;
+    /* texts */
+    --text-default: #333333;
+    --text-white: #ffffff;
+    /* items */
+    --bg-item-default: #a69677;
+    --bg-item-highlight: #d9ca9c;
+    /* buttons */
+    --btn-primary-text: #f2e205;
+    --btn-primary: #f25c05;
+    --btn-primary-hover: #b54200;
+    --btn-secondary-text: #d9ca9c;
+    --btn-secondary: #333333;
+    --btn-secondary-hover: #111111;
 }
 
 * {
     box-sizing: border-box;
-    font-family: 'Roboto';
+    font-family: "Roboto";
+    font-style: normal;
 }
 
-html, body, #app {
+html,
+body,
+#app {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
     height: 100%;
 }
 
@@ -35,8 +55,39 @@ h1:focus {
     outline: none;
 }
 
-/*-------------------*/
+.btn {
+    border: 0;
+    outline: none;
+}
 
+.btn-primary {
+    color: var(--btn-primary-text);
+    background: var(--btn-primary);
+}
+
+    .btn-primary:hover {
+        background: var(--btn-primary-hover);
+    }
+
+    .btn-primary:active {
+        background: var(--btn-primary);
+    }
+
+.btn-secondary {
+    color: var(--btn-secondary-text);
+    background: var(--btn-secondary);
+}
+
+    .btn-secondary:hover {
+        background: var(--btn-secondary-hover);
+    }
+
+    .btn-secondary:active {
+        background: var(--btn-secondary);
+    }
+
+
+/*-------------------*/
 .card-default {
     border-radius: 15px;
     justify-content: center;
@@ -47,14 +98,9 @@ h1:focus {
     border-radius: 10px;
 }
 
-
-
-
-
-
 /*-------------------*/
 
-.valid.modified:not([type=checkbox]) {
+.valid.modified:not([type="checkbox"]) {
     outline: 1px solid #26b050;
 }
 
@@ -92,5 +138,5 @@ h1:focus {
 }
 
     .blazor-error-boundary::after {
-        content: "An error has occurred."
+        content: "An error has occurred.";
     }

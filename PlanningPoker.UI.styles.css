@@ -189,48 +189,45 @@
     width: 135px;
     height: 105px;
     flex-direction: column;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.session-container .session-timer[b-vp179872r1] {
+    .session-container .session-timer[b-vp179872r1] {
         flex: 1;
         margin-top: 3px;
         justify-content: center;
         align-items: center;
         box-shadow: none;
         filter: none;
+        border-radius: 15px 15px 0 0;
+        background: var(--bg-item-default);
+        box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
 
-    .session-container .session-timer .highlight[b-vp179872r1] {
-        background: var(--color-bg-active1);
-    }
+        .session-container .session-timer.highlight[b-vp179872r1] {
+            background: var(--bg-item-highlight);
+        }
 
         .session-container .session-timer .session-timer-text[b-vp179872r1] {
-            font-family: 'Roboto';
-            font-style: normal;
+
             font-weight: 700;
             font-size: 36px;
-            color: var(--color-fg-text1);
+            color: var(--text-default);
             box-shadow: none;
             filter: none;
         }
 
     .session-container .session-button[b-vp179872r1] {
-        background: var(--color-bg-orange);
         justify-content: center;
-        align-items:center;
-        border: 0;
+        align-items: center;
         border-radius: 0px 0px 15px 15px;
         height: 40px;
     }
 
         .session-container .session-button .session-button-text[b-vp179872r1] {
-            font-family: 'Roboto';
-            font-style: normal;
             font-weight: 700;
             font-size: 24px;
-            color: var(--color-fg-yellow);
         }
 /* /Pages/Index.razor.rz.scp.css */
 .game-container[b-k783e0us72] {
