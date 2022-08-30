@@ -19,7 +19,7 @@
                 <CardContainer Label="Jogador" />
             </div>
             <GameTable>
-                <SessionTimer />
+                <SessionTimer StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
             </GameTable>
             <div class="player-seats-right">
                 <CardContainer Label="Jogador" />
@@ -31,7 +31,7 @@
                 <CardContainer Label="Jogador" />
                 <CardContainer Label="Jogador">
                     <Card Side=Side.Back />
-                </CardContainer>  
+                </CardContainer>
                 <CardContainer Label="Jogador">
                     <Card Side=Side.Front Number=8 />
                 </CardContainer>
@@ -43,4 +43,20 @@
     </div>
 </div>
 
-                <Modal/>
+@code {
+    private bool Started { get; set; } = false;
+    private DateTime StartedAt { get; set; } = DateTime.MinValue;
+
+    private void HandleToggleStartStop()
+    {
+        if (Started)
+        {
+            Started = false;
+            StartedAt = DateTime.MinValue;
+            return;
+        }
+
+        Started = true;
+        StartedAt = DateTime.Now;
+    }
+}

@@ -15,9 +15,14 @@
   <ItemGroup>
     <Watch Include="..\Components\**\*.razor" />
     <Watch Include="..\Components\**\*.css" />
+    <Watch Include="..\Helpers\**\*.razor" />
     <Watch Include="..\Pages\**\*.razor" />
     <Watch Include="..\Pages\**\*.css" />
     <Watch Include="..\Shared\**\*.razor" />
     <Watch Include="..\wwwroot\css\**\*.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PlanningPoker.Core\PlanningPoker.Core.csproj" />
   </ItemGroup>
 </Project>

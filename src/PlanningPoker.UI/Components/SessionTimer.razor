@@ -1,19 +1,79 @@
-﻿<div class="session-container">
-    <div class="session-timer">
-        <span class="session-timer-text">00:00</span>
+﻿@implements IDisposable
+
+<div class="session-container">
+    <div class=@SessionTimerStyle()>
+        <span class="session-timer-text">@($"{Timer.Minutes.ToString().PadLeft(2, '0')}:{Timer.Seconds.ToString().PadLeft(2, '0')}")</span>
     </div>
-    <button type="button" class="session-button">
-        <span class="session-button-text">iniciar</span>
+    <button type="button" class=@SessionButtonStyle() onclick=@OnClick>
+        <span class="session-button-text">@Label</span>
     </button>
 </div>
 
 @code {
-
-    private int Status { get => !Started && !Stoped ? 1 : Started && !Stoped ? 2 : 3; }
+    [Parameter]
+    public Action OnClick { get; set; }
 
     [Parameter]
-    public bool Started { get; set; }
+    public DateTime StartedAt { get; set; }
 
-    [Parameter]
-    public bool Stoped { get; set; }
+    private bool Started => StartedAt != DateTime.MinValue;
+    private TimeSpan Timer => Started ? DateTime.Now - StartedAt : TimeSpan.Zero;
+    private TimerStatus Status => Started ? TimerStatus.Started : TimerStatus.Stoped;
+    private Timer TimerTicker;
+
+    // >> UI
+
+    private string Label { get => Status == TimerStatus.Stoped ? "iniciar" : "parar"; }
+
+    private List<string> _sessionTimerStyle = CssHelper.Create("session-timer");
+    private string SessionTimerStyle() => _sessionTimerStyle.Join();
+
+    private List<string> _sessionButtonStyle = CssHelper.Create("btn", "btn-primary", "session-button");
+    private string SessionButtonStyle() => _sessionButtonStyle.Join();
+
+    // << UI
+
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("OnInitializedAsync " + Status);
+        return base.OnInitializedAsync();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Console.WriteLine("OnParametersSetAsync " + Status);
+
+        SetupStarted();
+        SetupStoped();
+
+        return base.OnParametersSetAsync();
+    }
+
+    public void Dispose() => TimerTicker?.Dispose();
+
+    private void SetupStarted()
+    {
+        if (!Started)
+            return;
+
+        TimerTicker = new Timer(UpdateClock, null, 0, 1000);
+
+        _sessionTimerStyle.AddClass("highlight");
+        _sessionButtonStyle.AddClass("btn-secondary");
+        _sessionButtonStyle.RemoveClass("btn-primary");
+    }
+
+    private void UpdateClock(object _) => InvokeAsync(StateHasChanged);
+
+    private void SetupStoped()
+    {
+        if (Started)
+            return;
+
+        TimerTicker?.Dispose();
+
+        _sessionTimerStyle.RemoveClass("highlight");
+        _sessionButtonStyle.RemoveClass("btn-secondary");
+        _sessionButtonStyle.AddClass("btn-primary");
+    }
 }
