@@ -47,7 +47,8 @@ namespace PlanningPoker.Bff
                 return;
 
             gameSession = UpdateCache(gameSession);
-            await Clients.Group(gameSession.Id).SendAsync("SessionContent", gameSession.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, gameSession.Id);
+            await Clients.Group(gameSession.Id).SendAsync(GameHubListeners.SessionContent, gameSession.ToString());
         }
 
         private async Task NotifySessionCreatedToCaller(GameSession gameSession)
@@ -57,7 +58,7 @@ namespace PlanningPoker.Bff
 
             gameSession = UpdateCache(gameSession);
             await Groups.AddToGroupAsync(Context.ConnectionId, gameSession.Id);
-            await Clients.Caller.SendAsync("SessionContent", gameSession.ToString());
+            await Clients.Caller.SendAsync(GameHubListeners.SessionContent, gameSession.ToString());
         }
 
         private async Task NotifyErrorToCaller(GameSession gameSession)
@@ -67,7 +68,7 @@ namespace PlanningPoker.Bff
             if (!gameSession.HasError)
                 return;
 
-            await Clients.Caller.SendAsync("SessionError", gameSession.ToString());
+            await Clients.Caller.SendAsync(GameHubListeners.SessionError, gameSession.ToString());
         }
 
         public async Task CreateSession(string ownerName)
