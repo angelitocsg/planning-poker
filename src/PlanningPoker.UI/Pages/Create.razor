@@ -1,12 +1,36 @@
-﻿@page "/"
+﻿@inject ISessionService _sessionService;
+@implements IDisposable
+
+@page "/"
 
 <div class="game-container">
     <Modal LabelOk="criar sessão" OnOkClick=@HandleEnter />
 </div>
 
 @code {
-    private void HandleEnter()
+    private string OwnerName { get; set; }
+
+    private void HandleEnter(string ownerName)
     {
-        _navigationManager.NavigateTo($"/session");
+        if (string.IsNullOrWhiteSpace(ownerName))
+            return;
+
+        _sessionService.CreateSession(ownerName);
+    }
+
+    private void EnterToSession()
+    {
+        Console.WriteLine("Sessão criada: {0}", _stateContainer.GameSession.Id);
+        _navigationManager.NavigateTo($"/session/{_stateContainer.GameSession.Id}");
+    }
+
+    protected override void OnInitialized()
+    {
+        _stateContainer.OnChange += EnterToSession;
+    }
+
+    public void Dispose()
+    {
+        _stateContainer.OnChange -= EnterToSession;
     }
 }

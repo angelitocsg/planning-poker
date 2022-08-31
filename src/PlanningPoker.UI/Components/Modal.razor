@@ -4,13 +4,13 @@
             Planning Poker
         </div>
         <div class="modal-body">
-            <input type="text" class="form-input" placeholder="Digite seu nome" />
+            <input type="text" class="form-input" placeholder="Digite seu nome" @bind-value="PlayerName" />
             <div class="btn-group">
                 @if (!string.IsNullOrWhiteSpace(LabelCancel))
                 {
-                    <button type="button" class="btn btn-secondary" onclick=@OnCancelClick>@LabelCancel</button>
+                    <button type="button" class="btn btn-secondary" @onclick=OnCancelClick>@LabelCancel</button>
                 }
-                <button type="button" class=@BtnPrimaryStyle onclick=@OnOkClick>@LabelOk</button>
+                <button type="button" class=@BtnPrimaryStyle @onclick=HandleOkClick>@LabelOk</button>
             </div>
         </div>
     </div>
@@ -27,10 +27,14 @@
     public string LabelCancel { get; set; }
 
     [Parameter]
-    public Action OnOkClick { get; set; }
+    public Action<string> OnOkClick { get; set; }
 
     [Parameter]
     public Action OnCancelClick { get; set; }
+
+    private string PlayerName { get; set; }
+
+    private void HandleOkClick() => OnOkClick.Invoke(PlayerName);
 
     private string BtnPrimaryOnlyStyle => string.IsNullOrWhiteSpace(LabelCancel) ? "only" : string.Empty;
     private string BtnPrimaryStyle => $"btn btn-primary {BtnPrimaryOnlyStyle}";

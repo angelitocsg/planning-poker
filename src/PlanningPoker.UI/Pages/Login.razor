@@ -1,13 +1,44 @@
-﻿@page "/session"
+﻿@inject ISessionService _sessionService;
+@implements IDisposable
+
+@page "/session/{sessionId}/enter"
 
 <div class="game-container">
     <Modal LabelOk="entrar" OnOkClick=@HandleEnter
-           LabelCancel="espiar" OnCancelClick=@HandleEnter />
+           LabelCancel="espiar" OnCancelClick=@HandleViewer />
 </div>
 
 @code {
-    private void HandleEnter()
+    [Parameter]
+    public string SessionId { get; set; }
+
+    private void HandleEnter(string playerName)
     {
-        _navigationManager.NavigateTo($"/session/1234");
+        if (string.IsNullOrWhiteSpace(playerName))
+            return;
+
+        _sessionService.JoinSession(SessionId, playerName);
     }
+
+    private void HandleViewer()
+    {
+        _sessionService.JoinSession(SessionId, "[GUEST]");
+    }
+
+    private void EnterToSession()
+    {
+        Console.WriteLine("Entrando na sessão: {0}", _stateContainer.GameSession.Id);
+        _navigationManager.NavigateTo($"/session/{_stateContainer.GameSession.Id}");
+    }
+
+    protected override void OnInitialized()
+    {
+        _stateContainer.OnChange += EnterToSession;
+    }
+
+    public void Dispose()
+    {
+        _stateContainer.OnChange -= EnterToSession;
+    }
+
 }

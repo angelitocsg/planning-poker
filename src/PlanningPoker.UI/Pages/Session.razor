@@ -1,4 +1,7 @@
-﻿@page "/session/{sessionId}"
+﻿@inject ISessionService _sessionService;
+@implements IDisposable
+
+@page "/session/{sessionId}"
 
 <PageTitle>Planning Poker | @@angelitocsg</PageTitle>
 
@@ -16,7 +19,7 @@
         </div>
         <div class="game-center">
             <div class="player-seats-left">
-                <CardContainer Label="Jogador" />
+                <CardContainer Label=@_stateContainer.LocalPlayerName />
             </div>
             <GameTable Active=@Started>
                 <SessionTimer StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
@@ -47,17 +50,36 @@
     [Parameter]
     public string SessionId { get; set; }
 
-    private DateTime StartedAt { get; set; } = DateTime.MinValue;
-    private bool Started => StartedAt != DateTime.MinValue;
+    private DateTime StartedAt => _stateContainer?.GameSession?.StartedAt ?? DateTime.MinValue;
+    private bool Started => _stateContainer?.GameSession?.Running ?? false;
 
-    private void HandleToggleStartStop()
+    private async Task HandleToggleStartStop()
     {
         if (Started)
         {
-            StartedAt = DateTime.MinValue;
+            await _sessionService.StopSession();
             return;
         }
 
-        StartedAt = DateTime.Now;
+        await _sessionService.StartSession();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!(await _sessionService.ValidSession(SessionId)))
+        {
+            Console.WriteLine("Usuário não logado na sessão: {0}", SessionId);
+            _navigationManager.NavigateTo($"/session/{SessionId}/enter");
+            return;
+        }
+
+        _stateContainer.OnChange += StateHasChanged;
+
+        await base.OnInitializedAsync();
+    }
+
+    public void Dispose()
+    {
+        _stateContainer.OnChange -= StateHasChanged;
     }
 }
