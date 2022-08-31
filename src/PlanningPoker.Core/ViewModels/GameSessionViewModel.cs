@@ -23,6 +23,10 @@ namespace PlanningPoker.Core.ViewModels
 
         public bool HasError { get => ErrorMessages != null && ErrorMessages?.Count() > 0; }
 
+        public bool Running { get; set; }
+
+        public bool Ended { get; set; }
+
         public override string ToString() => JsonConvert.SerializeObject(this);
     }
 }

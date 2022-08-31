@@ -18,5 +18,9 @@
         public IEnumerable<string>? ErrorMessages { get; }
 
         public bool HasError { get; }
+
+        public bool Running { get; }
+
+        public bool Ended { get; }
     }
 }

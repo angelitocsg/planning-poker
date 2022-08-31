@@ -27,8 +27,8 @@ namespace PlanningPoker.Core.Entities
 
         private bool NotStarted { get => StartedAt == null && StopedAt == null; }
 
-        private bool Running { get => StartedAt != null && StopedAt == null; }
-        private bool Ended { get => StartedAt != null && StopedAt != null; }
+        public bool Running { get => StartedAt != null && StopedAt == null; }
+        public bool Ended { get => StartedAt != null && StopedAt != null; }
 
         private GameSession() : this(string.Empty) { }
 
@@ -60,6 +60,12 @@ namespace PlanningPoker.Core.Entities
 
         public void AddPlayer(string playerName)
         {
+            if (playerName == "[GUEST]")
+            {
+                AddPlayerOrGuest(playerName);
+                return;
+            }
+
             if (Running || Ended)
             {
                 _errorMesasges.Add($"Session {Id} is running or ended, {playerName} can't join now.");
@@ -72,12 +78,17 @@ namespace PlanningPoker.Core.Entities
                 return;
             }
 
-            if (_players.Count() >= 14)
+            if (_players.Count >= 14)
             {
                 _errorMesasges.Add($"Maximum number of players reached.");
                 return;
             }
 
+            AddPlayerOrGuest(playerName);
+        }
+
+        private void AddPlayerOrGuest(string playerName)
+        {
             var player = new Player(playerName);
 
             if (!_players.Any(x => x.Name == player.Name))
