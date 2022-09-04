@@ -1,35 +1,91 @@
 ﻿<div class=@PlayerTableStyle>
     <div class="player-table-text">
-        @PlayerName, escolha sua pontuação:
+        @if (Active)
+        {
+            <span>@PlayerName, escolha sua pontuação:</span>
+        }
+        else
+        {
+            <span>@PlayerName, aguarde o início</span>
+        }
     </div>
     <div class="player-cards">
-        <CardContainer Small>
-            <Card Small Number="1"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.One)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.One Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
 
-        <CardContainer Small>
-            <Card Small Number="2"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.Two)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.Two Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
 
-        <CardContainer Small>
-            <Card Small Number="3"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.Three)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.Three Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
 
-        <CardContainer Small>
-            <Card Small Number="5"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.Five)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.Five Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
 
-        <CardContainer Small>
-            <Card Small Number="8"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.Eight)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.Eight Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
 
-        <CardContainer Small>
-            <Card Small Number="13"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.Thirteen)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.Thirteen Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
 
-        <CardContainer Small>
-            <Card Small Number="21"></Card>
-        </CardContainer>
+        @if (Placed == CardNumber.TwentyOne)
+        {
+            <CardContainer Small />
+        }
+        else
+        {
+            <CardContainer Small>
+                <Card Small Number=CardNumber.TwentyOne Side=@(Active? Side.Front:Side.Back) OnClick=@OnCardNumberClick />
+            </CardContainer>
+        }
     </div>
 </div>
 
@@ -40,8 +96,14 @@
     [Parameter]
     public bool Highlight { get; set; }
 
-        [Parameter]
+    [Parameter]
     public bool Active { get; set; }
+
+    [Parameter]
+    public CardNumber? Placed { get; set; }
+
+    [Parameter]
+    public Func<CardNumber, Task> OnCardNumberClick { get; set; }
 
     private string PlayerTableActiveStyle => Active ? "highlight" : string.Empty;
     private string PlayerTableStyle => $"player-table {PlayerTableActiveStyle}";

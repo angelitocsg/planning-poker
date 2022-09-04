@@ -24,4 +24,9 @@
 
     private string CardLabelSmallStyle => Small ? "card-label-small" : string.Empty;
     private string CardLabelStyle => $"card-label {CardLabelSmallStyle}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 }

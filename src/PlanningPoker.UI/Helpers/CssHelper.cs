@@ -12,20 +12,22 @@
 
         public static void AddClass(this List<string> classList, string className)
         {
-            if (classList.Contains(className))
+            if (classList == null)
                 return;
 
-            Console.WriteLine("AddClass: {0}", className);
+            if (classList.Contains(className))
+                return;
 
             classList.Add(className);
         }
 
         public static void RemoveClass(this List<string> classList, string className)
         {
-            if (!classList.Contains(className))
+            if (classList == null)
                 return;
 
-            Console.WriteLine("RemoveClass: {0}", className);
+            if (!classList.Contains(className))
+                return;
 
             classList.Remove(className);
         }

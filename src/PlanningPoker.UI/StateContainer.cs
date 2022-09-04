@@ -4,9 +4,17 @@ namespace PlanningPoker.UI
 {
     public class StateContainer
     {
-        public string SessionId { get; private set; }
+        private string _sessionId = null;
+        public string SessionId
+        {
+            get => _sessionId; set
+            {
+                _sessionId = value;
+                NotifyStateChanged();
+            }
+        }
 
-        public GameSessionViewModel _gameSession = null;
+        private GameSessionViewModel _gameSession = null;
         public GameSessionViewModel GameSession
         {
             get => _gameSession;
@@ -17,7 +25,7 @@ namespace PlanningPoker.UI
             }
         }
 
-        public string _localPlayerName = null;
+        private string _localPlayerName = null;
         public string LocalPlayerName
         {
             get => _localPlayerName;
@@ -41,9 +49,20 @@ namespace PlanningPoker.UI
 
         public bool Started => StartedAt != DateTime.MinValue;
 
-
         public event Action OnChange;
 
-        private void NotifyStateChanged() => OnChange?.Invoke();
+        public void Reset()
+        {
+            _sessionId = null;
+            _gameSession = null;
+            _localPlayerName = null;
+            _startedAt = DateTime.MinValue;
+        }
+
+        private void NotifyStateChanged()
+        {
+            Console.WriteLine("State changed. OnChange {0}", OnChange != null);
+            OnChange?.Invoke();
+        }
     }
 }

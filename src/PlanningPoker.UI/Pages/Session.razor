@@ -1,5 +1,8 @@
-﻿@inject ISessionService _sessionService;
+﻿@using Core.ViewModels
+@using System.Text.Json
+
 @implements IDisposable
+@inject ISessionService _sessionService;
 
 @page "/session/{sessionId}"
 
@@ -9,40 +12,82 @@
     <div class="game-area">
         <div class="game-top">
             <div class="player-seats-top">
-                <CardContainer Label="Jogador A" />
-                <CardContainer Label="Jogador B" />
-                <CardContainer Label="Jogador C" />
-                <CardContainer Label="Jogador D" />
-                <CardContainer Label="Jogador E" />
-                <CardContainer Label="Jogador F" />
+                @foreach (var item in PlayersAtTop)
+                {
+                    @if (!string.IsNullOrWhiteSpace(item.PlayerName))
+                    {
+                        @if (item.cardSide == Side.Hidden)
+                        {
+                            <CardContainer Label=@item.PlayerName />
+                        }
+                        else
+                        {
+                            <CardContainer Label=@item.PlayerName>
+                                <Card Side=item.cardSide Number=@item.Number />
+                            </CardContainer>
+                        }
+                    }
+                }
             </div>
         </div>
         <div class="game-center">
             <div class="player-seats-left">
-                <CardContainer Label=@_stateContainer.LocalPlayerName />
+                @if (LeftAndRight.Count > 0)
+                {
+                    @if (LeftAndRight[0].cardSide == Side.Hidden)
+                    {
+                        <CardContainer Label=@LeftAndRight[0].PlayerName />
+                    }
+                    else
+                    {
+                        <CardContainer Label=@LeftAndRight[0].PlayerName>
+                            <Card Side=LeftAndRight[0].cardSide Number=@LeftAndRight[0].Number />
+                        </CardContainer>
+                    }
+                }
             </div>
-            <GameTable Active=@Started>
+            <GameTable Active=@Running>
                 <SessionTimer StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
             </GameTable>
             <div class="player-seats-right">
-                <CardContainer Label="Jogador" />
+                @if (LeftAndRight.Count > 1)
+                {
+                    @if (LeftAndRight[1].cardSide == Side.Hidden)
+                    {
+                        <CardContainer Label=@LeftAndRight[1].PlayerName />
+                    }
+                    else
+                    {
+                        <CardContainer Label=@LeftAndRight[1].PlayerName>
+                            <Card Side=LeftAndRight[1].cardSide Number=@LeftAndRight[1].Number />
+                        </CardContainer>
+                    }
+                }
             </div>
         </div>
         <div class="game-bottom">
             <div class="player-seats-bottom">
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador" />
-                <CardContainer Label="Jogador">
-                    <Card Side=Side.Back />
-                </CardContainer>
-                <CardContainer Label="Jogador">
-                    <Card Side=Side.Front Number=8 />
-                </CardContainer>
+                @foreach (var item in PlayersAtBottom)
+                {
+                    @if (!string.IsNullOrWhiteSpace(item.PlayerName))
+                    {
+                        @if (item.cardSide == Side.Hidden)
+                        {
+                            <CardContainer Label=@item.PlayerName />
+                        }
+                        else
+                        {
+                            <CardContainer Label=@item.PlayerName>
+                                <Card Side=item.cardSide Number=@item.Number />
+                            </CardContainer>
+                        }
+                    }
+                }
             </div>
         </div>
     </div>
     <div class="game-player">
-        <PlayerTable Active=@Started PlayerName="Jogador A"></PlayerTable>
+        <PlayerTable Active=@Running PlayerName=@PlayerName Placed=@Placed() OnCardNumberClick=@HandleCardNumberClick></PlayerTable>
     </div>
 </div>
 
@@ -50,12 +95,19 @@
     [Parameter]
     public string SessionId { get; set; }
 
-    private DateTime StartedAt => _stateContainer?.GameSession?.StartedAt ?? DateTime.MinValue;
-    private bool Started => _stateContainer?.GameSession?.Running ?? false;
+    private bool Running => _stateContainer?.GameSession?.Running ?? false;
+    private DateTime StartedAt => Running ? _stateContainer?.GameSession?.StartedAt ?? DateTime.MinValue : DateTime.MinValue;
+    private string PlayerName => _stateContainer?.LocalPlayerName ?? string.Empty;
+
+    private List<(string PlayerName, CardNumber? Number, Side cardSide)> LeftAndRight { get; set; } = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
+    private List<(string PlayerName, CardNumber? Number, Side cardSide)> PlayersAtTop { get; set; } = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
+    private List<(string PlayerName, CardNumber? Number, Side cardSide)> PlayersAtBottom { get; set; } = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
+
+    private CardNumber? Placed() => _stateContainer?.GameSession?.Players.FirstOrDefault(x => x.Name == _stateContainer?.LocalPlayerName)?.LastMove?.Number;
 
     private async Task HandleToggleStartStop()
     {
-        if (Started)
+        if (Running)
         {
             await _sessionService.StopSession();
             return;
@@ -64,8 +116,66 @@
         await _sessionService.StartSession();
     }
 
+    private async Task HandleCardNumberClick(CardNumber number)
+    {
+        if (Running)
+            await _sessionService.SelectCardNumber(number);
+    }
+
+    private void PlacePlayerAroundTable()
+    {
+        Console.WriteLine("PlacePlayerAroundTable");
+
+        LeftAndRight = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
+        PlayersAtTop = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
+        PlayersAtBottom = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
+
+        if (_stateContainer.GameSession == null)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(_stateContainer));
+            _sessionService.JoinSession(SessionId, _stateContainer.LocalPlayerName);
+            return;
+        }
+
+        var playersCount = _stateContainer.GameSession?.Players?.Count() ?? 0;
+        var players = _stateContainer.GameSession?.Players.ToArray();
+
+        if (playersCount > 0)
+            PositionPlayer(LeftAndRight, players[0]);
+
+        if (playersCount > 1)
+            PositionPlayer(LeftAndRight, players[1]);
+
+        if (playersCount > 2)
+            for (int i = 2; i < playersCount; i = i + 2)
+            {
+                PositionPlayer(PlayersAtTop, players[i]);
+
+                if (i < playersCount)
+                    PositionPlayer(PlayersAtTop, players[i + 1]);
+            }
+
+        StateHasChanged();
+    }
+
+    private void PositionPlayer(List<(string PlayerName, CardNumber? Number, Side cardSide)> list, PlayerViewModel player)
+    {
+        list.Add((player.Name, player.LastMove?.Number,
+            player.LastMove == null
+                ? Side.Hidden
+                : Running
+                    ? Side.Back
+                    : Side.Front));
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        if (!await _sessionService.HasSession())
+        {
+            Console.WriteLine("Sessão {0} não existe.", SessionId);
+            _navigationManager.NavigateTo($"/");
+        }
+
         if (!(await _sessionService.ValidSession(SessionId)))
         {
             Console.WriteLine("Usuário não logado na sessão: {0}", SessionId);
@@ -73,13 +183,16 @@
             return;
         }
 
-        _stateContainer.OnChange += StateHasChanged;
+        _stateContainer.OnChange += PlacePlayerAroundTable;
+        PlacePlayerAroundTable();
+
+        Console.WriteLine("SessionId: {0}", SessionId);
 
         await base.OnInitializedAsync();
     }
 
     public void Dispose()
     {
-        _stateContainer.OnChange -= StateHasChanged;
+        _stateContainer.OnChange -= PlacePlayerAroundTable;
     }
 }

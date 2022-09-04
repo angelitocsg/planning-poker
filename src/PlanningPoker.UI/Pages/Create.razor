@@ -2,16 +2,22 @@
 @implements IDisposable
 
 @page "/"
+@page "/session"
 
 <div class="game-container">
-    <Modal LabelOk="criar sessão" OnOkClick=@HandleEnter />
+    <Modal LabelOk=@LabelOk OnOkClick=@HandleEnter DisabledOk=@Loading />
 </div>
 
 @code {
     private string OwnerName { get; set; }
+    private bool Loading { get; set; }
+    private string LabelOk => Loading ? "carregando..." : "criar sessão";
 
     private void HandleEnter(string ownerName)
     {
+        Loading = true;
+        StateHasChanged();
+
         if (string.IsNullOrWhiteSpace(ownerName))
             return;
 
@@ -20,8 +26,9 @@
 
     private void EnterToSession()
     {
-        Console.WriteLine("Sessão criada: {0}", _stateContainer.GameSession.Id);
-        _navigationManager.NavigateTo($"/session/{_stateContainer.GameSession.Id}");
+        Loading = false;
+        Console.WriteLine("Sessão criada: {0}", _stateContainer?.GameSession?.Id);
+        _navigationManager.NavigateTo($"/session/{_stateContainer?.GameSession?.Id}");
     }
 
     protected override void OnInitialized()

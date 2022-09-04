@@ -14,6 +14,8 @@ namespace PlanningPoker.UI.Services
         Task StartSession();
         Task StopSession();
         Task<bool> ValidSession(string pSessionId);
+        Task<bool> HasSession();
+        Task SelectCardNumber(CardNumber number);
     }
 
     public class SessionService : ISessionService
@@ -130,8 +132,45 @@ namespace PlanningPoker.UI.Services
             await Connection.InvokeAsync(GameHubActions.StopSession, sessionId, playerName);
         }
 
+        public async Task<bool> HasSession()
+        {
+            var sessionId = await GetSessionId();
+            Console.WriteLine("SessionService.HasSession: {0}", sessionId);
+
+            if (string.IsNullOrWhiteSpace(sessionId)) return false;
+
+            Console.WriteLine("continuou");
+            Console.WriteLine(sessionId);
+
+            if (Connection == null) await Connect();
+            var hasSession = await Connection.InvokeAsync<bool>(GameHubActions.HasSession, sessionId);
+
+            if (!hasSession)
+            {
+                await ClearSession();
+                _stateContainer.Reset();
+            }
+
+            return hasSession;
+        }
+
+        public async Task SelectCardNumber(CardNumber number)
+        {
+            var playerName = await GetPlayerName();
+            var sessionId = await GetSessionId();
+            Console.WriteLine("SessionService.SelectCardNumber: {0}-{1}", sessionId, playerName);
+            if (Connection == null) await Connect();
+            await Connection.InvokeAsync(GameHubActions.SelectCardNumber, sessionId, playerName, number);
+        }
+
         public async Task<string> GetSessionId() => await _localStorage.GetItemAsync<string>("SessionId");
         public async Task<string> GetPlayerName() => await _localStorage.GetItemAsync<string>("PlayerName");
+
+        public async Task ClearSession()
+        {
+            await _localStorage.RemoveItemAsync("SessionId");
+            await _localStorage.RemoveItemAsync("PlayerName");
+        }
 
         public async Task<bool> ValidSession(string pSessionId)
         {
@@ -140,6 +179,9 @@ namespace PlanningPoker.UI.Services
 
             if (!string.IsNullOrWhiteSpace(playerName))
                 _stateContainer.LocalPlayerName = playerName;
+
+            if (!string.IsNullOrWhiteSpace(sessionId))
+                _stateContainer.SessionId = sessionId;
 
             return !(string.IsNullOrWhiteSpace(playerName)
                 || string.IsNullOrWhiteSpace(sessionId)

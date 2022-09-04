@@ -27,8 +27,17 @@
 
     private void EnterToSession()
     {
+        Thread.Sleep(500);
         Console.WriteLine("Entrando na sessão: {0}", _stateContainer.GameSession.Id);
         _navigationManager.NavigateTo($"/session/{_stateContainer.GameSession.Id}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!await _sessionService.HasSession())
+            _navigationManager.NavigateTo($"/");
+
+        await base.OnInitializedAsync();
     }
 
     protected override void OnInitialized()

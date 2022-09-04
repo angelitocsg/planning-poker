@@ -35,14 +35,11 @@
 
     protected override Task OnInitializedAsync()
     {
-        Console.WriteLine("OnInitializedAsync " + Status);
         return base.OnInitializedAsync();
     }
 
     protected override Task OnParametersSetAsync()
     {
-        Console.WriteLine("OnParametersSetAsync " + Status);
-
         SetupStarted();
         SetupStoped();
 

@@ -10,13 +10,16 @@
                 {
                     <button type="button" class="btn btn-secondary" @onclick=OnCancelClick>@LabelCancel</button>
                 }
-                <button type="button" class=@BtnPrimaryStyle @onclick=HandleOkClick>@LabelOk</button>
+                <button type="button" class=@BtnPrimaryStyle disabled=@DisabledOk @onclick=HandleOkClick>@LabelOk</button>
             </div>
         </div>
     </div>
 </div>
 
 @code {
+    [Parameter]
+    public bool DisabledOk { get; set; }
+
     [Parameter]
     public string Title { get; set; }
 

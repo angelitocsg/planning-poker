@@ -1,8 +1,8 @@
 ﻿@if (Side == Side.Front)
 {
-    <div class=@CardFrontStyle>
+    <button type="button" class=@CardFrontStyle onclick=@HandleClick>
         <CardText Small=@Small Number=@Number />
-    </div>
+    </button>
 }
 @if (Side == Side.Back)
 {
@@ -13,13 +13,16 @@
 
 @code {
     [Parameter]
-    public int Number { get; set; }
+    public CardNumber? Number { get; set; }
 
     [Parameter]
     public Side Side { get; set; }
 
     [Parameter]
     public bool Small { get; set; }
+
+    [Parameter]
+    public Func<CardNumber, Task> OnClick { get; set; }
 
     private string CardFrontSmallStyle => Small ? "card-small" : string.Empty;
     private string CardFrontStyle => $"card-default card-front {CardFrontSmallStyle}";
@@ -29,4 +32,12 @@
 
     private string CardBackLineSmallStyle => Small ? "card-small" : string.Empty;
     private string CardBackLineStyle => $"card-default card-back-line {CardBackLineSmallStyle}";
+
+    private Task HandleClick()
+    {
+        if (Number != null)
+            OnClick?.Invoke(Number ?? CardNumber.Zero);
+
+        return Task.CompletedTask;
+    }
 }
