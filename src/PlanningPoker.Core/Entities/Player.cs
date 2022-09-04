@@ -17,5 +17,10 @@ namespace PlanningPoker.Core.Entities
         {
             LastMove = new Card(number);
         }
+
+        internal void ResetMove()
+        {
+            LastMove = null;
+        }
     }
 }

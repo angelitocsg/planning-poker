@@ -8,7 +8,7 @@
         Three = 3,
         Five = 5,
         Eight = 8,
-        Thirtee = 12,
+        Thirteen = 13,
         TwentyOne = 21
     }
 }

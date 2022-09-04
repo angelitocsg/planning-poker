@@ -2,6 +2,7 @@
 {
     public enum Side
     {
+        Hidden,
         Front,
         Back
     }

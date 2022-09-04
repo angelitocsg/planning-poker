@@ -7,6 +7,8 @@ namespace PlanningPoker.Core.ViewModels
     {
         public string Id { get; set; } = string.Empty;
 
+        public string Description { get; set; } = string.Empty;
+
         public PlayerViewModel Owner { get; set; } = new PlayerViewModel(string.Empty);
 
         public IEnumerable<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();

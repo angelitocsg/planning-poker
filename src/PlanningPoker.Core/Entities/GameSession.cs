@@ -7,6 +7,9 @@ namespace PlanningPoker.Core.Entities
     public class GameSession : IGameSession<Player>
     {
         public string Id { get; private set; }
+
+        public string Description { get; private set; }
+
         public Player Owner { get; private set; }
 
         private List<Player> _players { get; set; }
@@ -20,8 +23,8 @@ namespace PlanningPoker.Core.Entities
 
         public DateTime? StopedAt { get; private set; }
 
-        private List<string> _errorMesasges { get; set; }
-        public IEnumerable<string> ErrorMessages { get => _errorMesasges; }
+        private List<string> _errorMessages { get; set; }
+        public IEnumerable<string> ErrorMessages { get => _errorMessages; }
 
         public bool HasError { get => ErrorMessages != null && ErrorMessages?.Count() > 0; }
 
@@ -39,48 +42,61 @@ namespace PlanningPoker.Core.Entities
             CreatedAt = DateTime.Now;
 
             _players = new List<Player>() { Owner };
-            _errorMesasges = new List<string>();
+            _errorMessages = new List<string>();
 
 
             if (ownerName.Length > 15)
             {
-                _errorMesasges.Add($"Owner name {ownerName} must contain up to 15 characters.");
+                _errorMessages.Add($"Owner name {ownerName} must contain up to 15 characters.");
                 return;
             }
+        }
+
+        private void ClearErrors() => _errorMessages = new List<string>();
+
+        private void ClearMoves()
+        {
+            _players = _players.Select(x =>
+            {
+                x.ResetMove();
+                return x;
+            }).ToList();
         }
 
         public static GameSession CreateGameSessionError(string message)
         {
             var gameSession = new GameSession();
 
-            gameSession._errorMesasges.Add(message);
+            gameSession._errorMessages.Add(message);
 
             return gameSession;
         }
 
         public void AddPlayer(string playerName)
         {
+            ClearErrors();
+
             if (playerName == "[GUEST]")
             {
                 AddPlayerOrGuest(playerName);
                 return;
             }
 
-            if (Running || Ended)
+            if (Running)
             {
-                _errorMesasges.Add($"Session {Id} is running or ended, {playerName} can't join now.");
+                _errorMessages.Add($"Session {Id} is running, {playerName} can't join now.");
                 return;
             }
 
             if (playerName.Length > 15)
             {
-                _errorMesasges.Add($"Player name {playerName} must contain up to 15 characters.");
+                _errorMessages.Add($"Player name {playerName} must contain up to 15 characters.");
                 return;
             }
 
             if (_players.Count >= 14)
             {
-                _errorMesasges.Add($"Maximum number of players reached.");
+                _errorMessages.Add($"Maximum number of players reached.");
                 return;
             }
 
@@ -89,6 +105,8 @@ namespace PlanningPoker.Core.Entities
 
         private void AddPlayerOrGuest(string playerName)
         {
+            ClearErrors();
+
             var player = new Player(playerName);
 
             if (!_players.Any(x => x.Name == player.Name))
@@ -97,15 +115,18 @@ namespace PlanningPoker.Core.Entities
 
         public void Start(string playerName)
         {
+            ClearErrors();
+            ClearMoves();
+
             if (Running)
             {
-                _errorMesasges.Add($"Session {Id} already started.");
+                _errorMessages.Add($"Session {Id} already started.");
                 return;
             }
 
             if (Owner.Name != playerName)
             {
-                _errorMesasges.Add($"Only session owner {Owner.Name} can start session.");
+                _errorMessages.Add($"Only session owner {Owner.Name} can start session. Received {playerName}");
                 return;
             }
 
@@ -118,15 +139,17 @@ namespace PlanningPoker.Core.Entities
 
         public void Stop(string playerName)
         {
+            ClearErrors();
+
             if (Ended)
             {
-                _errorMesasges.Add($"Session {Id} already stopped.");
+                _errorMessages.Add($"Session {Id} already stopped.");
                 return;
             }
 
             if (Owner.Name != playerName)
             {
-                _errorMesasges.Add($"Only session owner {Owner.Name} can stop session.");
+                _errorMessages.Add($"Only session owner {Owner.Name} can stop session.");
                 return;
             }
 
@@ -140,9 +163,11 @@ namespace PlanningPoker.Core.Entities
 
         public void SetPlayerMove(string playerName, CardNumber number)
         {
+            ClearErrors();
+
             if (!Running)
             {
-                _errorMesasges.Add($"Session {Id} not running, {playerName} can't move yet.");
+                _errorMessages.Add($"Session {Id} not running, {playerName} can't move yet.");
                 return;
             }
 
@@ -150,11 +175,30 @@ namespace PlanningPoker.Core.Entities
 
             if (player == null)
             {
-                _errorMesasges.Add($"{playerName} is not joined to session {Id}.");
+                _errorMessages.Add($"{playerName} is not joined to session {Id}.");
                 return;
             }
 
             player.SetLastMove(number);
+        }
+
+        public void UpdateDescription(string playerName, string description)
+        {
+            ClearErrors();
+
+            if (Running)
+            {
+                _errorMessages.Add($"Session {Id} already started, you can't update description.");
+                return;
+            }
+
+            if (Owner.Name != playerName)
+            {
+                _errorMessages.Add($"Only session owner {Owner.Name} can update description. Received {playerName}");
+                return;
+            }
+
+            Description = description;
         }
     }
 }
