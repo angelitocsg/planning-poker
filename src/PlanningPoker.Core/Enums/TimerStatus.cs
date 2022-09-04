@@ -2,7 +2,8 @@
 {
     public enum TimerStatus
     {
-        Started,
-        Stoped
+        NotStarted,
+        Running,
+        Stopped
     }
 }

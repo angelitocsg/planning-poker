@@ -25,6 +25,8 @@ namespace PlanningPoker.Core.ViewModels
 
         public bool HasError { get => ErrorMessages != null && ErrorMessages?.Count() > 0; }
 
+        public bool NotStarted { get; set; }
+
         public bool Running { get; set; }
 
         public bool Ended { get; set; }

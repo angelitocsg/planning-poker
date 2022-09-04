@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PlanningPoker.Core.ViewModels
+namespace PlanningPoker.Core.FormModel
 {
-    public class DescriptionForm
+    public class DescriptionFormModel
     {
         [Required]
         public string Description { get; set; } = string.Empty;

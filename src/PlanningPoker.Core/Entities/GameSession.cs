@@ -28,8 +28,7 @@ namespace PlanningPoker.Core.Entities
 
         public bool HasError { get => ErrorMessages != null && ErrorMessages?.Count() > 0; }
 
-        private bool NotStarted { get => StartedAt == null && StopedAt == null; }
-
+        public bool NotStarted { get => StartedAt == null && StopedAt == null; }
         public bool Running { get => StartedAt != null && StopedAt == null; }
         public bool Ended { get => StartedAt != null && StopedAt != null; }
 

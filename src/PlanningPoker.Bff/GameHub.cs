@@ -87,7 +87,7 @@ namespace PlanningPoker.Bff
 
         public bool HasSession(string sessionId)
         {
-            Log($"{nameof(HasSession)}-{nameof(sessionId)}");
+            Log($"{nameof(HasSession)}-{nameof(sessionId)}: {sessionId}");
             var gameSession = GetGameSessionFromCache(sessionId);
             return !gameSession.HasError;
         }
