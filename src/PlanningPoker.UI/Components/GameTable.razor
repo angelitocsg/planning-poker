@@ -1,5 +1,10 @@
-﻿<div class=@GameTableStyle>
-    <span class="task-name">Implementação da Tela XYZ</span>
+﻿@using PlanningPoker.Core.ViewModels
+<div class=@GameTableStyle>
+    <div class="task-name-form">
+        <EditForm Model=@FormModel OnValidSubmit=@HandleFormSubmit style="display: flex; flex: 1 auto">
+            <input type="text" class="task-name" placeholder="Defina o nome da história / tarefa" @bind-value="FormModel.Description" />
+        </EditForm>
+    </div>
     @ChildContent
 </div>
 
@@ -10,6 +15,33 @@
     [Parameter]
     public bool Active { get; set; }
 
+    [Parameter]
+    public string DescriptionFromHub
+    {
+        get
+        {
+            return FormModel.Description;
+        }
+        set
+        {
+            Console.WriteLine("DescriptionFromHub: {0}", value);
+            FormModel.Description = value;
+        }
+    }
+
+    [Parameter]
+    public Func<string, Task> OnDescriptionChange { get; set; }
+
+    private DescriptionForm FormModel { get; set; } = new DescriptionForm();
+
     private string GameTableActiveStyle => Active ? "highlight" : string.Empty;
     private string GameTableStyle => $"game-table {GameTableActiveStyle}";
+
+    private void HandleFormSubmit()
+    {
+        Console.WriteLine(FormModel.Description);
+
+        if (!string.IsNullOrWhiteSpace(FormModel.Description))
+            OnDescriptionChange?.Invoke(FormModel.Description);
+    }
 }

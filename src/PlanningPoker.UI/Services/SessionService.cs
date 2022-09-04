@@ -13,8 +13,9 @@ namespace PlanningPoker.UI.Services
         Task JoinSession(string sessionId, string playerName);
         Task StartSession();
         Task StopSession();
+        Task UpdateDescription(string description);
         Task<bool> ValidSession(string pSessionId);
-        Task<bool> HasSession();
+        Task<bool> HasSession(string pSessionId = null);
         Task SelectCardNumber(CardNumber number);
     }
 
@@ -80,7 +81,7 @@ namespace PlanningPoker.UI.Services
 
                 _stateContainer.GameSession = content;
 
-                Console.WriteLine(JsonConvert.SerializeObject(content));
+                Console.WriteLine("SessionContent: {0}", JsonConvert.SerializeObject(content));
 
                 await _localStorage.SetItemAsync("SessionId", _stateContainer.GameSession.Id);
             });
@@ -92,7 +93,8 @@ namespace PlanningPoker.UI.Services
                 if (string.IsNullOrEmpty(value))
                     return;
 
-                Console.WriteLine(JsonConvert.SerializeObject(value));
+                Console.WriteLine("SessionError: {0}", JsonConvert.SerializeObject(value));
+
             });
         }
 
@@ -132,15 +134,21 @@ namespace PlanningPoker.UI.Services
             await Connection.InvokeAsync(GameHubActions.StopSession, sessionId, playerName);
         }
 
-        public async Task<bool> HasSession()
+        public async Task UpdateDescription(string description)
         {
+            var playerName = await GetPlayerName();
             var sessionId = await GetSessionId();
+            Console.WriteLine("SessionService.UpdateDescription: {0}-{1}-{2}", sessionId, playerName, description);
+            if (Connection == null) await Connect();
+            await Connection.InvokeAsync(GameHubActions.UpdateDescription, sessionId, playerName, description);
+        }
+
+        public async Task<bool> HasSession(string pSessionId = null)
+        {
+            var sessionId = pSessionId ?? await GetSessionId();
             Console.WriteLine("SessionService.HasSession: {0}", sessionId);
 
             if (string.IsNullOrWhiteSpace(sessionId)) return false;
-
-            Console.WriteLine("continuou");
-            Console.WriteLine(sessionId);
 
             if (Connection == null) await Connect();
             var hasSession = await Connection.InvokeAsync<bool>(GameHubActions.HasSession, sessionId);

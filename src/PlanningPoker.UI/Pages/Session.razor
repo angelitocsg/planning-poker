@@ -46,7 +46,7 @@
                     }
                 }
             </div>
-            <GameTable Active=@Running>
+            <GameTable DescriptionFromHub=@GetDescription() OnDescriptionChange=@HandleDescriptionChange Active=@Running>
                 <SessionTimer StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
             </GameTable>
             <div class="player-seats-right">
@@ -104,6 +104,7 @@
     private List<(string PlayerName, CardNumber? Number, Side cardSide)> PlayersAtBottom { get; set; } = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
 
     private CardNumber? Placed() => _stateContainer?.GameSession?.Players.FirstOrDefault(x => x.Name == _stateContainer?.LocalPlayerName)?.LastMove?.Number;
+    private string GetDescription() => _stateContainer?.GameSession?.Description;
 
     private async Task HandleToggleStartStop()
     {
@@ -122,9 +123,14 @@
             await _sessionService.SelectCardNumber(number);
     }
 
+    private async Task HandleDescriptionChange(string description)
+    {
+        await _sessionService.UpdateDescription(description);
+    }
+
     private void PlacePlayerAroundTable()
     {
-        Console.WriteLine("PlacePlayerAroundTable");
+        Console.WriteLine("Description: {0}", GetDescription());
 
         LeftAndRight = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
         PlayersAtTop = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
@@ -170,12 +176,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!await _sessionService.HasSession())
-        {
-            Console.WriteLine("Sessão {0} não existe.", SessionId);
-            _navigationManager.NavigateTo($"/");
-        }
-
         if (!(await _sessionService.ValidSession(SessionId)))
         {
             Console.WriteLine("Usuário não logado na sessão: {0}", SessionId);
@@ -183,10 +183,14 @@
             return;
         }
 
+        if (!await _sessionService.HasSession(SessionId))
+        {
+            Console.WriteLine("Sessão {0} não existe.", SessionId);
+            _navigationManager.NavigateTo($"/");
+        }
+
         _stateContainer.OnChange += PlacePlayerAroundTable;
         PlacePlayerAroundTable();
-
-        Console.WriteLine("SessionId: {0}", SessionId);
 
         await base.OnInitializedAsync();
     }

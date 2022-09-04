@@ -116,7 +116,7 @@ namespace PlanningPoker.Bff
 
         public async Task UpdateDescription(string sessionId, string playerName, string description)
         {
-            Log($"{nameof(StartSession)}-{nameof(sessionId)}: {sessionId} | {nameof(playerName)}: {playerName} | {nameof(description)}: {description}");
+            Log($"{nameof(UpdateDescription)}-{nameof(sessionId)}: {sessionId} | {nameof(playerName)}: {playerName} | {nameof(description)}: {description}");
 
             var gameSession = GetGameSessionFromCache(sessionId);
             gameSession.UpdateDescription(playerName, description);

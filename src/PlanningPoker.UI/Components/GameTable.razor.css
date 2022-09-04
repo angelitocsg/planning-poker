@@ -13,11 +13,17 @@
         background: var(--bg-item-highlight);
     }
 
+    .game-table .task-name-form {
+        display: flex;
+        flex: 1 auto;
+    }
+           
     .game-table .task-name {
-        font-family: 'Roboto';
-        font-style: normal;
+        border: 0;
+        outline: 0;
+        background: inherit;
         font-weight: 800;
         font-size: 24px;
-        flex: 1 auto;
+        width: 100%;
         color: var(--color-fg-text1);
     }

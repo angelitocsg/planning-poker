@@ -11,9 +11,12 @@
 @code {
     [Parameter]
     public string SessionId { get; set; }
+    private bool Loading { get; set; }
+    private string LabelOk => Loading ? "entrando..." : "entrar";
 
     private void HandleEnter(string playerName)
     {
+        Loading = true;
         if (string.IsNullOrWhiteSpace(playerName))
             return;
 
@@ -28,6 +31,7 @@
     private void EnterToSession()
     {
         Thread.Sleep(500);
+        Loading = false;
         Console.WriteLine("Entrando na sessão: {0}", _stateContainer.GameSession.Id);
         _navigationManager.NavigateTo($"/session/{_stateContainer.GameSession.Id}");
     }
