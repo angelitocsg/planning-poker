@@ -74,6 +74,10 @@ h1:focus {
         background: var(--btn-primary);
     }
 
+    .btn-primary:disabled {
+        background: var(--btn-primary-hover);
+    }
+
 .btn-secondary {
     color: var(--btn-secondary-text);
     background: var(--btn-secondary);
@@ -85,6 +89,10 @@ h1:focus {
 
     .btn-secondary:active {
         background: var(--btn-secondary);
+    }
+
+    .btn-secondary:disabled {
+        background: var(--btn-secondary-hover);
     }
 
 

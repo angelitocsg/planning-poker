@@ -4,6 +4,9 @@
     height: 100%;
     background-color: var(--bg-card-front-default);
     cursor: pointer;
+    border: 0;
+    outline: 0;
+    display: flex;
 }
 
     .card-front:hover[b-a2pkwganf5] {
@@ -252,8 +255,8 @@
     flex-direction: column;
     flex: 1;
 }
-/* /Pages/Login.razor.rz.scp.css */
-.game-container[b-0bwnznm102] {
+/* /Pages/NewPlayer.razor.rz.scp.css */
+.game-container[b-txd0o0sf16] {
     flex-direction: column;
     flex: 1;
 }
