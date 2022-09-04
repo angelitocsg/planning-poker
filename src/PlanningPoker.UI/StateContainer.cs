@@ -1,4 +1,5 @@
-﻿using PlanningPoker.Core.ViewModels;
+﻿using PlanningPoker.Core.Enums;
+using PlanningPoker.Core.ViewModels;
 
 namespace PlanningPoker.UI
 {
@@ -63,6 +64,29 @@ namespace PlanningPoker.UI
         {
             Console.WriteLine("State changed. OnChange {0}", OnChange != null);
             OnChange?.Invoke();
+        }
+
+        public IEnumerable<(CardNumber Number, string Votes)> SummaryData
+        {
+            get
+            {
+                Console.WriteLine("Change summary");
+
+                if (GameSession == null)
+                    return default;
+
+                var summaryData = GameSession.Players
+                    .Where(w => w.LastMove != null)
+                    .GroupBy(g => g.LastMove.Number)
+                    .Select(x => (Number: x.Key, Votes: x.Count().ToString()))
+                    .OrderBy(x => x.Votes)
+                    .ToList();
+
+                var average = (int)summaryData?.Average(x => (int)x.Number);
+                summaryData.Add((Number: Enum.Parse<CardNumber>(average.ToString()), Votes: "Média"));
+
+                return summaryData;
+            }
         }
     }
 }

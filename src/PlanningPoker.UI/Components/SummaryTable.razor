@@ -1,0 +1,17 @@
+﻿<div class="summary-table highlight">
+    <div class="summary-cards">
+        @if (SummaryData != null)
+            @foreach (var data in SummaryData)
+            {
+                <CardContainer Small Label=@data.Votes.ToString()>
+                    <Card Small Number=@data.Number Side=Side.Front />
+                </CardContainer>
+
+            }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<(CardNumber Number, string Votes)> SummaryData { get; set; }
+}

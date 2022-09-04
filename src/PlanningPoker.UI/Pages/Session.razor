@@ -87,7 +87,14 @@
         </div>
     </div>
     <div class="game-player">
-        <PlayerTable Active=@Running PlayerName=@PlayerName Placed=@Placed() OnCardNumberClick=@HandleCardNumberClick></PlayerTable>
+        @if (_stateContainer?.GameSession?.Ended ?? false)
+        {
+            <SummaryTable SummaryData=@_stateContainer?.SummaryData />
+        }
+        else
+        {
+            <PlayerTable Active=@Running PlayerName=@PlayerName Placed=@Placed() OnCardNumberClick=@HandleCardNumberClick></PlayerTable>
+        }
     </div>
 </div>
 
@@ -106,7 +113,7 @@
     private CardNumber? Placed() => _stateContainer?.GameSession?.Players.FirstOrDefault(x => x.Name == _stateContainer?.LocalPlayerName)?.LastMove?.Number;
     private string GetDescription() => _stateContainer?.GameSession?.Description;
 
-    private async Task HandleToggleStartStop()
+        private async Task HandleToggleStartStop()
     {
         if (Running)
         {
@@ -145,6 +152,7 @@
 
         var playersCount = _stateContainer.GameSession?.Players?.Count() ?? 0;
         var players = _stateContainer.GameSession?.Players.ToArray();
+        Console.WriteLine("Players: {0}", playersCount);
 
         if (playersCount > 0)
             PositionPlayer(LeftAndRight, players[0]);
@@ -158,7 +166,7 @@
                 PositionPlayer(PlayersAtTop, players[i]);
 
                 if (i < playersCount)
-                    PositionPlayer(PlayersAtTop, players[i + 1]);
+                    PositionPlayer(PlayersAtBottom, players[i + 1]);
             }
 
         StateHasChanged();

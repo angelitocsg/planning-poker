@@ -72,7 +72,7 @@ namespace PlanningPoker.UI.Services
         {
             Connection.On<string>(GameHubListeners.SessionContent, async (value) =>
             {
-                Console.WriteLine("SessionContent received.");
+                Console.WriteLine("SessionContent received. {0}", value == null);
 
                 if (string.IsNullOrEmpty(value))
                     return;
@@ -81,7 +81,7 @@ namespace PlanningPoker.UI.Services
 
                 _stateContainer.GameSession = content;
 
-                Console.WriteLine("SessionContent: {0}", JsonConvert.SerializeObject(content));
+                Console.WriteLine(JsonConvert.SerializeObject(content));
 
                 await _localStorage.SetItemAsync("SessionId", _stateContainer.GameSession.Id);
             });
@@ -93,7 +93,7 @@ namespace PlanningPoker.UI.Services
                 if (string.IsNullOrEmpty(value))
                     return;
 
-                Console.WriteLine("SessionError: {0}", JsonConvert.SerializeObject(value));
+                Console.WriteLine(JsonConvert.SerializeObject(value));
 
             });
         }

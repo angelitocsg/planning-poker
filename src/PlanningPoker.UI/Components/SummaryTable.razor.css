@@ -1,0 +1,32 @@
+﻿.summary-table {
+    background: var(--bg-item-default);
+    min-width: 550px;
+    height: 160px;
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .summary-table.highlight {
+        background: var(--bg-item-highlight);
+    }
+
+.summary-cards {
+    width: 90%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+}
+
+.player-table-text {
+    color: var(--color-fg-text1);
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
