@@ -110,8 +110,8 @@
         width: 100%;
         color: var(--color-fg-text1);
     }
-/* /Components/Modal.razor.rz.scp.css */
-.modal[b-clsfrv84o2] {
+/* /Components/PlayerModal.razor.rz.scp.css */
+.modal[b-62dhjbvffk] {
     top: 0;
     left: 0;
     width: 100%;
@@ -123,7 +123,7 @@
     align-items: center;
 }
 
-    .modal .modal-dialog[b-clsfrv84o2] {
+    .modal .modal-dialog[b-62dhjbvffk] {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -132,20 +132,22 @@
         padding: 30px;
     }
 
-        .modal .modal-dialog .modal-title[b-clsfrv84o2] {
+        .modal .modal-dialog .modal-title[b-62dhjbvffk],
+        .modal .modal-dialog .modal-title a[b-62dhjbvffk] {
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 800;
             font-size: 32px;
             color: var(--color-fg-text1);
+            text-decoration: none;
         }
 
-        .modal .modal-dialog .modal-body[b-clsfrv84o2] {
+        .modal .modal-dialog .modal-body[b-62dhjbvffk] {
             padding-top: 20px;
             flex-direction: column;
         }
 
-            .modal .modal-dialog .modal-body .form-input[b-clsfrv84o2] {
+            .modal .modal-dialog .modal-body .form-input[b-62dhjbvffk] {
                 border: 0;
                 border-radius: 15px;
                 background: var(--color-bg-back2);
@@ -160,7 +162,7 @@
                 text-align: center;
             }
 
-.btn[b-clsfrv84o2] {
+.btn[b-62dhjbvffk] {
     border: 0;
     outline: none;
     width: 100%;
@@ -170,15 +172,15 @@
     font-size: 20px;
 }
 
-    .btn.btn-primary[b-clsfrv84o2] {
+    .btn.btn-primary[b-62dhjbvffk] {
         border-radius: 0 15px 15px 0;
     }
 
-    .btn.btn-secondary[b-clsfrv84o2] {
+    .btn.btn-secondary[b-62dhjbvffk] {
         border-radius: 15px 0 0 15px;
     }
 
-    .btn.btn-primary.only[b-clsfrv84o2] {
+    .btn.btn-primary.only[b-62dhjbvffk] {
         border-radius: 15px;
     }
 
@@ -350,4 +352,29 @@
     .game-container .game-player[b-5n0d07fw7s] {
         height: 160px;
         justify-content: center;
+    }
+/* /Shared/MainLayout.razor.rz.scp.css */
+.error[b-6k1dy1em4r] {
+    background: #f1f1f1;
+    align-content: center;
+    padding: 40px;
+    flex-direction: column;
+    flex: 1;
+}
+
+    .error h1[b-6k1dy1em4r] {
+        font-size: 3em;
+        color: #990000;
+    }
+
+    .error h2[b-6k1dy1em4r] {
+        font-size: 2em;
+        color: #333333;
+    }
+
+    .error .sad-404[b-6k1dy1em4r] {
+        position: absolute;
+        max-width: 300px;
+        bottom: 0;
+        right: 0;
     }
