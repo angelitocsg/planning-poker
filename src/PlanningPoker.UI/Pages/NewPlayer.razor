@@ -4,8 +4,8 @@
 @page "/session/{sessionId}/enter"
 
 <div class="game-container">
-    <Modal LabelOk="entrar" OnOkClick=@HandleEnter
-           LabelCancel="espiar" OnCancelClick=@HandleViewer />
+    <PlayerModal LabelOk=@LabelOk OnOkClick=@HandleEnter
+                 LabelCancel=@LabelCancel OnCancelClick=@HandleViewer />
 </div>
 
 @code {
@@ -13,6 +13,7 @@
     public string SessionId { get; set; }
     private bool Loading { get; set; }
     private string LabelOk => Loading ? "entrando..." : "entrar";
+    private string LabelCancel => Loading ? "entrando..." : "espiar";
 
     private void HandleEnter(string playerName)
     {
@@ -38,7 +39,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!await _sessionService.HasSession())
+        if (!await _sessionService.HasSession(SessionId))
             _navigationManager.NavigateTo($"/");
 
         await base.OnInitializedAsync();

@@ -12,6 +12,7 @@ namespace PlanningPoker.UI.Services
         Task CreateSession(string ownerName);
         Task JoinSession(string sessionId, string playerName);
         Task StartSession();
+        Task RestartSession();
         Task StopSession();
         Task UpdateDescription(string description);
         Task<bool> ValidSession(string pSessionId);
@@ -46,21 +47,21 @@ namespace PlanningPoker.UI.Services
 
             Connection.Closed += async (error) =>
             {
-                Console.WriteLine("Conexão perdida: {0}", error?.Message);
+                Console.WriteLine("[Service] Conexão perdida: {0}", error?.Message);
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await Connection.StartAsync();
             };
 
             Connection.Reconnecting += error =>
             {
-                Console.WriteLine("Reconectando... {0}", error?.Message);
+                Console.WriteLine("[Service] Reconectando... {0}", error?.Message);
                 Debug.Assert(Connection.State == HubConnectionState.Reconnecting);
                 return Task.CompletedTask;
             };
 
             Connection.Reconnected += connectionId =>
             {
-                Console.WriteLine("Reconectado! {0}", connectionId);
+                Console.WriteLine("[Service] Reconectado! {0}", connectionId);
                 Debug.Assert(Connection.State == HubConnectionState.Connected);
                 return Task.CompletedTask;
             };
@@ -72,7 +73,7 @@ namespace PlanningPoker.UI.Services
         {
             Connection.On<string>(GameHubListeners.SessionContent, async (value) =>
             {
-                Console.WriteLine("SessionContent received. {0}", value == null);
+                Console.WriteLine("[Service] SessionContent received. HasValue: {0}", value != null);
 
                 if (string.IsNullOrEmpty(value))
                     return;
@@ -88,7 +89,7 @@ namespace PlanningPoker.UI.Services
 
             Connection.On<string>(GameHubListeners.SessionError, (value) =>
             {
-                Console.WriteLine("SessionError received.");
+                Console.WriteLine("[Service] SessionError received.");
 
                 if (string.IsNullOrEmpty(value))
                     return;
@@ -100,7 +101,7 @@ namespace PlanningPoker.UI.Services
 
         public async Task CreateSession(string ownerName)
         {
-            Console.WriteLine("SessionService.CreateSession: {0}", ownerName);
+            Console.WriteLine("[Service] CreateSession: {0}", ownerName);
             await Connect();
             await Connection.InvokeAsync(GameHubActions.CreateSession, ownerName);
             await _localStorage.SetItemAsync("PlayerName", ownerName);
@@ -109,7 +110,7 @@ namespace PlanningPoker.UI.Services
 
         public async Task JoinSession(string sessionId, string playerName)
         {
-            Console.WriteLine("SessionService.JoinSession: {0}-{1}", sessionId, playerName);
+            Console.WriteLine("[Service] JoinSession: {0}-{1}", sessionId, playerName);
             await Connect();
             await Connection.InvokeAsync(GameHubActions.JoinSession, sessionId, playerName);
             await _localStorage.SetItemAsync("PlayerName", playerName);
@@ -120,16 +121,25 @@ namespace PlanningPoker.UI.Services
         {
             var playerName = await GetPlayerName();
             var sessionId = await GetSessionId();
-            Console.WriteLine("SessionService.StartSession: {0}-{1}", sessionId, playerName);
+            Console.WriteLine("[Service] StartSession: {0}-{1}", sessionId, playerName);
             if (Connection == null) await Connect();
             await Connection.InvokeAsync(GameHubActions.StartSession, sessionId, playerName);
+        }
+
+        public async Task RestartSession()
+        {
+            var playerName = await GetPlayerName();
+            var sessionId = await GetSessionId();
+            Console.WriteLine("[Service] RestartSession: {0}-{1}", sessionId, playerName);
+            if (Connection == null) await Connect();
+            await Connection.InvokeAsync(GameHubActions.RestartSession, sessionId, playerName);
         }
 
         public async Task StopSession()
         {
             var playerName = await GetPlayerName();
             var sessionId = await GetSessionId();
-            Console.WriteLine("SessionService.StopSession: {0}-{1}", sessionId, playerName);
+            Console.WriteLine("[Service] StopSession: {0}-{1}", sessionId, playerName);
             if (Connection == null) await Connect();
             await Connection.InvokeAsync(GameHubActions.StopSession, sessionId, playerName);
         }
@@ -138,15 +148,24 @@ namespace PlanningPoker.UI.Services
         {
             var playerName = await GetPlayerName();
             var sessionId = await GetSessionId();
-            Console.WriteLine("SessionService.UpdateDescription: {0}-{1}-{2}", sessionId, playerName, description);
+            Console.WriteLine("[Service] UpdateDescription: {0}-{1}-{2}", sessionId, playerName, description);
             if (Connection == null) await Connect();
             await Connection.InvokeAsync(GameHubActions.UpdateDescription, sessionId, playerName, description);
+        }
+
+        public async Task SelectCardNumber(CardNumber number)
+        {
+            var playerName = await GetPlayerName();
+            var sessionId = await GetSessionId();
+            Console.WriteLine("[Service] SelectCardNumber: {0}-{1}", sessionId, playerName);
+            if (Connection == null) await Connect();
+            await Connection.InvokeAsync(GameHubActions.SelectCardNumber, sessionId, playerName, number);
         }
 
         public async Task<bool> HasSession(string pSessionId = null)
         {
             var sessionId = pSessionId ?? await GetSessionId();
-            Console.WriteLine("SessionService.HasSession: {0}", sessionId);
+            Console.WriteLine("[Service] HasSession: {0}|{1}", pSessionId, sessionId);
 
             if (string.IsNullOrWhiteSpace(sessionId)) return false;
 
@@ -159,16 +178,9 @@ namespace PlanningPoker.UI.Services
                 _stateContainer.Reset();
             }
 
-            return hasSession;
-        }
+            Console.WriteLine("[Service] HasSession: {0}", hasSession);
 
-        public async Task SelectCardNumber(CardNumber number)
-        {
-            var playerName = await GetPlayerName();
-            var sessionId = await GetSessionId();
-            Console.WriteLine("SessionService.SelectCardNumber: {0}-{1}", sessionId, playerName);
-            if (Connection == null) await Connect();
-            await Connection.InvokeAsync(GameHubActions.SelectCardNumber, sessionId, playerName, number);
+            return hasSession;
         }
 
         public async Task<string> GetSessionId() => await _localStorage.GetItemAsync<string>("SessionId");
@@ -185,15 +197,22 @@ namespace PlanningPoker.UI.Services
             var playerName = await GetPlayerName();
             var sessionId = await GetSessionId();
 
+            Console.WriteLine("[Service] ValidSession:\n SessionId {0}\n pSessionId {1}\n PlayerName {2}\n", sessionId, pSessionId, playerName);
+
             if (!string.IsNullOrWhiteSpace(playerName))
                 _stateContainer.LocalPlayerName = playerName;
 
             if (!string.IsNullOrWhiteSpace(sessionId))
                 _stateContainer.SessionId = sessionId;
 
-            return !(string.IsNullOrWhiteSpace(playerName)
-                || string.IsNullOrWhiteSpace(sessionId)
-                || pSessionId != sessionId);
+            if (!string.IsNullOrWhiteSpace(pSessionId) && pSessionId != sessionId)
+                await _localStorage.SetItemAsync("SessionId", pSessionId);
+
+            var valid = !string.IsNullOrWhiteSpace(playerName) && !string.IsNullOrWhiteSpace(sessionId);
+
+            Console.WriteLine("[Service] ValidSession: {0}", valid);
+
+            return valid;
         }
     }
 }

@@ -8,44 +8,29 @@ namespace PlanningPoker.UI
         private string _sessionId = null;
         public string SessionId
         {
-            get => _sessionId; set
-            {
-                _sessionId = value;
-                NotifyStateChanged();
-            }
+            get => _sessionId;
+            set { _sessionId = value; NotifyStateChanged(); }
         }
 
         private GameSessionViewModel _gameSession = null;
         public GameSessionViewModel GameSession
         {
             get => _gameSession;
-            set
-            {
-                _gameSession = value;
-                NotifyStateChanged();
-            }
+            set { _gameSession = value; NotifyStateChanged(); }
         }
 
         private string _localPlayerName = null;
         public string LocalPlayerName
         {
             get => _localPlayerName;
-            set
-            {
-                _localPlayerName = value;
-                NotifyStateChanged();
-            }
+            set { _localPlayerName = value; NotifyStateChanged(); }
         }
 
         private DateTime _startedAt = DateTime.MinValue;
         public DateTime StartedAt
         {
             get => _startedAt;
-            set
-            {
-                _startedAt = value;
-                NotifyStateChanged();
-            }
+            set { _startedAt = value; NotifyStateChanged(); }
         }
 
         public bool Started => StartedAt != DateTime.MinValue;
@@ -58,32 +43,41 @@ namespace PlanningPoker.UI
             _gameSession = null;
             _localPlayerName = null;
             _startedAt = DateTime.MinValue;
+            NotifyStateChanged();
         }
 
         private void NotifyStateChanged()
         {
-            Console.WriteLine("State changed. OnChange {0}", OnChange != null);
+            Console.WriteLine("State changed. Has listeners: {0}", OnChange != null);
             OnChange?.Invoke();
         }
 
-        public IEnumerable<(CardNumber Number, string Votes)> SummaryData
+        public IEnumerable<SummaryViewModel> SummaryData
         {
             get
             {
-                Console.WriteLine("Change summary");
-
                 if (GameSession == null)
                     return default;
 
+                Console.WriteLine("Calculating summary");
+
                 var summaryData = GameSession.Players
-                    .Where(w => w.LastMove != null)
+                    .Where(w => w.LastMove != null)?
                     .GroupBy(g => g.LastMove.Number)
-                    .Select(x => (Number: x.Key, Votes: x.Count().ToString()))
-                    .OrderBy(x => x.Votes)
+                    .Select(x => new SummaryViewModel(x.Key, x.Count().ToString()))
+                    .OrderByDescending(x => x.Votes)
                     .ToList();
 
-                var average = (int)summaryData?.Average(x => (int)x.Number);
-                summaryData.Add((Number: Enum.Parse<CardNumber>(average.ToString()), Votes: "Média"));
+                if (summaryData?.Count == 0)
+                    return new List<SummaryViewModel>()
+                        {
+                           new SummaryViewModel (CardNumber.Zero, "Média")
+                        };
+
+                var average = (int)(summaryData?.Average(x => (int)x.Number) ?? 0);
+                Console.WriteLine("Average: {0}", average);
+
+                summaryData.Add(new SummaryViewModel(Enum.Parse<CardNumber>(average.ToString()), "Média"));
 
                 return summaryData;
             }

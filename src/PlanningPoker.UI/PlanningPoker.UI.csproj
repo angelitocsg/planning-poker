@@ -16,10 +16,12 @@
   <ItemGroup>
     <Watch Include="..\Components\**\*.razor" />
     <Watch Include="..\Components\**\*.css" />
-    <Watch Include="..\Helpers\**\*.razor" />
+    <Watch Include="..\Helpers\**\*.cs" />
     <Watch Include="..\Pages\**\*.razor" />
     <Watch Include="..\Pages\**\*.css" />
+    <Watch Include="..\Services\**\*.cs" />
     <Watch Include="..\Shared\**\*.razor" />
+    <Watch Include="..\StateContainer.cs" />
     <Watch Include="..\wwwroot\css\**\*.css" />
   </ItemGroup>
 

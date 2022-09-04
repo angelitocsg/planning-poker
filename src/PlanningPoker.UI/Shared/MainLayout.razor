@@ -1,3 +1,14 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<ErrorBoundary>
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <ErrorContent>
+        <div class="error">
+            <h1>Que droga!</h1>
+            <h2>Não tinha previsto esse erro.</h2>
+            <img class="sad-404" src="./images/sad-404.png" />
+        </div>
+    </ErrorContent>
+</ErrorBoundary>

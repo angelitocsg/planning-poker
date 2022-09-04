@@ -1,4 +1,6 @@
-﻿<div class="summary-table highlight">
+﻿@using PlanningPoker.Core.ViewModels
+
+<div class="summary-table highlight">
     <div class="summary-cards">
         @if (SummaryData != null)
             @foreach (var data in SummaryData)
@@ -13,5 +15,5 @@
 
 @code {
     [Parameter]
-    public IEnumerable<(CardNumber Number, string Votes)> SummaryData { get; set; }
+    public IEnumerable<SummaryViewModel> SummaryData { get; set; }
 }

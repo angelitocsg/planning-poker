@@ -1,0 +1,55 @@
+﻿@using PlanningPoker.Core.FormModel
+
+<EditForm Model=@FormModel OnValidSubmit=@HandleFormSubmit style="display: flex; flex: 1 auto">
+    <div class="modal">
+        <div class="modal-dialog">
+            <div class="modal-title">
+                <a href="/">Planning Poker</a>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-input" placeholder="Digite seu nome" @bind-value="FormModel.PlayerName" />
+                <div class="btn-group">
+                    @if (!string.IsNullOrWhiteSpace(LabelCancel))
+                    {
+                        <button type="button" class="btn btn-secondary" @onclick=OnCancelClick>@LabelCancel</button>
+                    }
+                    <button type="submit" class=@BtnPrimaryStyle disabled=@DisabledOk>@LabelOk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public bool DisabledOk { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string LabelOk { get; set; }
+
+    [Parameter]
+    public string LabelCancel { get; set; }
+
+    [Parameter]
+    public Action<string> OnOkClick { get; set; }
+
+    [Parameter]
+    public Action OnCancelClick { get; set; }
+
+    private PlayerFormModel FormModel { get; set; } = new PlayerFormModel();
+
+    private void HandleFormSubmit()
+    {
+        Console.WriteLine("FormModel.PlayerName: {0}", FormModel.PlayerName);
+
+        if (!string.IsNullOrWhiteSpace(FormModel.PlayerName))
+            OnOkClick?.Invoke(FormModel.PlayerName);
+    }
+
+    private string BtnPrimaryOnlyStyle => string.IsNullOrWhiteSpace(LabelCancel) ? "only" : string.Empty;
+    private string BtnPrimaryStyle => $"btn btn-primary {BtnPrimaryOnlyStyle}";
+
+}

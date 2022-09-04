@@ -75,6 +75,7 @@ h1:focus {
 
     .btn-primary:disabled {
         background: var(--btn-primary-hover);
+        cursor: not-allowed;
     }
 
 .btn-secondary {
@@ -92,6 +93,7 @@ h1:focus {
 
     .btn-secondary:disabled {
         background: var(--btn-secondary-hover);
+        cursor: not-allowed;
     }
 
 

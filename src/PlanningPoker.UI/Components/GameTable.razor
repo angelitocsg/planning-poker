@@ -1,8 +1,8 @@
-﻿@using PlanningPoker.Core.ViewModels
+﻿@using PlanningPoker.Core.FormModel
 <div class=@GameTableStyle>
     <div class="task-name-form">
         <EditForm Model=@FormModel OnValidSubmit=@HandleFormSubmit style="display: flex; flex: 1 auto">
-            <input type="text" class="task-name" placeholder="Defina o nome da história / tarefa" @bind-value="FormModel.Description" />
+            <input @onblur=@HandleFormSubmit type="text" class="task-name" placeholder="Defina o nome da história / tarefa" @bind-value="FormModel.Description" />
         </EditForm>
     </div>
     @ChildContent
@@ -18,28 +18,21 @@
     [Parameter]
     public string DescriptionFromHub
     {
-        get
-        {
-            return FormModel.Description;
-        }
-        set
-        {
-            Console.WriteLine("DescriptionFromHub: {0}", value);
-            FormModel.Description = value;
-        }
+        get { return FormModel.Description; }
+        set { FormModel.Description = value; }
     }
 
     [Parameter]
     public Func<string, Task> OnDescriptionChange { get; set; }
 
-    private DescriptionForm FormModel { get; set; } = new DescriptionForm();
+    private DescriptionFormModel FormModel { get; set; } = new DescriptionFormModel();
 
     private string GameTableActiveStyle => Active ? "highlight" : string.Empty;
     private string GameTableStyle => $"game-table {GameTableActiveStyle}";
 
     private void HandleFormSubmit()
     {
-        Console.WriteLine(FormModel.Description);
+        Console.WriteLine("FormModel.Description: {0}",FormModel.Description);
 
         if (!string.IsNullOrWhiteSpace(FormModel.Description))
             OnDescriptionChange?.Invoke(FormModel.Description);

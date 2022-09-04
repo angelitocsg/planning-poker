@@ -16,14 +16,19 @@
     [Parameter]
     public DateTime StartedAt { get; set; }
 
-    private bool Started => StartedAt != DateTime.MinValue;
-    private TimeSpan Timer => Started ? DateTime.Now - StartedAt : TimeSpan.Zero;
-    private TimerStatus Status => Started ? TimerStatus.Started : TimerStatus.Stoped;
+    [Parameter]
+    public bool Running { get; set; }
+
+    [Parameter]
+    public bool Ended { get; set; }
+
+    private TimeSpan Timer => Running ? DateTime.Now - StartedAt : TimeSpan.Zero;
+    private TimerStatus Status => Running ? TimerStatus.Running : Ended ? TimerStatus.Stopped : TimerStatus.NotStarted;
     private Timer TimerTicker;
 
     // >> UI
 
-    private string Label { get => Status == TimerStatus.Stoped ? "iniciar" : "parar"; }
+    private string Label { get => Status == TimerStatus.NotStarted ? "iniciar" : Status == TimerStatus.Running ? "parar" : "reiniciar"; }
 
     private List<string> _sessionTimerStyle = CssHelper.Create("session-timer");
     private string SessionTimerStyle() => _sessionTimerStyle.Join();
@@ -50,7 +55,7 @@
 
     private void SetupStarted()
     {
-        if (!Started)
+        if (!Running)
             return;
 
         TimerTicker = new Timer(UpdateClock, null, 0, 1000);
@@ -64,7 +69,7 @@
 
     private void SetupStoped()
     {
-        if (Started)
+        if (Running)
             return;
 
         TimerTicker?.Dispose();

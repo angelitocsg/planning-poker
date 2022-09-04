@@ -19,12 +19,14 @@
         padding: 30px;
     }
 
-        .modal .modal-dialog .modal-title {
+        .modal .modal-dialog .modal-title,
+        .modal .modal-dialog .modal-title a {
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 800;
             font-size: 32px;
             color: var(--color-fg-text1);
+            text-decoration: none;
         }
 
         .modal .modal-dialog .modal-body {

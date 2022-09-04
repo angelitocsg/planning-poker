@@ -47,7 +47,7 @@
                 }
             </div>
             <GameTable DescriptionFromHub=@GetDescription() OnDescriptionChange=@HandleDescriptionChange Active=@Running>
-                <SessionTimer StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
+                <SessionTimer Running=@Running Ended=@Ended StartedAt=@StartedAt OnClick=@HandleToggleStartStop />
             </GameTable>
             <div class="player-seats-right">
                 @if (LeftAndRight.Count > 1)
@@ -103,6 +103,7 @@
     public string SessionId { get; set; }
 
     private bool Running => _stateContainer?.GameSession?.Running ?? false;
+    private bool Ended => _stateContainer?.GameSession?.Ended ?? false;
     private DateTime StartedAt => Running ? _stateContainer?.GameSession?.StartedAt ?? DateTime.MinValue : DateTime.MinValue;
     private string PlayerName => _stateContainer?.LocalPlayerName ?? string.Empty;
 
@@ -113,11 +114,17 @@
     private CardNumber? Placed() => _stateContainer?.GameSession?.Players.FirstOrDefault(x => x.Name == _stateContainer?.LocalPlayerName)?.LastMove?.Number;
     private string GetDescription() => _stateContainer?.GameSession?.Description;
 
-        private async Task HandleToggleStartStop()
+    private async Task HandleToggleStartStop()
     {
         if (Running)
         {
             await _sessionService.StopSession();
+            return;
+        }
+
+        if (Ended)
+        {
+            await _sessionService.RestartSession();
             return;
         }
 
@@ -137,8 +144,6 @@
 
     private void PlacePlayerAroundTable()
     {
-        Console.WriteLine("Description: {0}", GetDescription());
-
         LeftAndRight = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
         PlayersAtTop = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
         PlayersAtBottom = new List<(string PlayerName, CardNumber? Number, Side cardSide)>();
@@ -152,7 +157,7 @@
 
         var playersCount = _stateContainer.GameSession?.Players?.Count() ?? 0;
         var players = _stateContainer.GameSession?.Players.ToArray();
-        Console.WriteLine("Players: {0}", playersCount);
+        Console.WriteLine("[SessionUI] Players to place around table: {0}", playersCount);
 
         if (playersCount > 0)
             PositionPlayer(LeftAndRight, players[0]);
@@ -165,10 +170,11 @@
             {
                 PositionPlayer(PlayersAtTop, players[i]);
 
-                if (i < playersCount)
+                if ((i + 1) < playersCount)
                     PositionPlayer(PlayersAtBottom, players[i + 1]);
             }
 
+        Console.WriteLine("[SessionUI] PlacePlayerAroundTable.StateHasChanged");
         StateHasChanged();
     }
 
@@ -184,21 +190,24 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!(await _sessionService.ValidSession(SessionId)))
+        var validSession = await _sessionService.ValidSession(SessionId);
+        var hasSession = await _sessionService.HasSession(SessionId);
+
+        if (!hasSession)
         {
-            Console.WriteLine("Usuário não logado na sessão: {0}", SessionId);
+            Console.WriteLine("[SessionUI] Sessão {0} não existe.", SessionId);
+            _navigationManager.NavigateTo($"/");
+        }
+
+        if (!validSession)
+        {
+            Console.WriteLine("[SessionUI] Usuário não logado na sessão: {0}", SessionId);
             _navigationManager.NavigateTo($"/session/{SessionId}/enter");
             return;
         }
 
-        if (!await _sessionService.HasSession(SessionId))
-        {
-            Console.WriteLine("Sessão {0} não existe.", SessionId);
-            _navigationManager.NavigateTo($"/");
-        }
-
-        _stateContainer.OnChange += PlacePlayerAroundTable;
         PlacePlayerAroundTable();
+        _stateContainer.OnChange += PlacePlayerAroundTable;
 
         await base.OnInitializedAsync();
     }
