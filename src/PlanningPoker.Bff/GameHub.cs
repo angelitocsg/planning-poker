@@ -136,6 +136,17 @@ namespace PlanningPoker.Bff
             await NotifyErrorToCaller(gameSession);
         }
 
+        public async Task RestartSession(string sessionId, string playerName)
+        {
+            Log($"{nameof(RestartSession)}-{nameof(sessionId)}: {sessionId} | {nameof(playerName)}: {playerName}");
+
+            var gameSession = GetGameSessionFromCache(sessionId);
+            gameSession.Restart(playerName);
+
+            await NotifyChangesToPlayers(gameSession);
+            await NotifyErrorToCaller(gameSession);
+        }
+
         public async Task StopSession(string sessionId, string playerName)
         {
             Log($"{nameof(StopSession)}-{nameof(sessionId)}: {sessionId} | {nameof(playerName)}: {playerName}");

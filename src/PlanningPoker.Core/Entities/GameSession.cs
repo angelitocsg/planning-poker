@@ -8,7 +8,7 @@ namespace PlanningPoker.Core.Entities
     {
         public string Id { get; private set; }
 
-        public string Description { get; private set; }
+        public string Description { get; private set; } = string.Empty;
 
         public Player Owner { get; private set; }
 
@@ -133,6 +133,31 @@ namespace PlanningPoker.Core.Entities
             if (NotStarted || Ended)
             {
                 StartedAt = DateTime.Now;
+                StopedAt = null;
+            }
+        }
+
+        public void Restart(string playerName)
+        {
+            ClearErrors();
+            ClearMoves();
+
+            if (Running)
+            {
+                _errorMessages.Add($"Session {Id} already started.");
+                return;
+            }
+
+            if (Owner.Name != playerName)
+            {
+                _errorMessages.Add($"Only session owner {Owner.Name} can restart session. Received {playerName}");
+                return;
+            }
+
+            if (NotStarted || Ended)
+            {
+                Description = string.Empty;
+                StartedAt = null;
                 StopedAt = null;
             }
         }
